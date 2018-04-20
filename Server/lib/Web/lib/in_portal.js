@@ -18,7 +18,7 @@
 
 (function(){
 	var $stage;
-	var LIMIT = 400;
+	var LIMIT = 100;
 	var LIST;
 
 	$(document).ready(function(){

@@ -253,7 +253,7 @@ Server.post("/cf", function(req, res){
 	var tray = (req.body.tray || "").split('|');
 	var i, o;
 	
-	if(tray.length < 1 || tray.length > 6) return res.json({ error: 400 });
+	if(tray.length < 1 || tray.length > 10) return res.json({ error: 400 });
 	MainDB.users.findOne([ '_id', uid ]).limit([ 'money', true ], [ 'box', true ]).on(function($user){
 		if(!$user) return res.json({ error: 400 });
 		if(!$user.box) $user.box = {};

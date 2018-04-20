@@ -272,6 +272,9 @@ block Middle
 				- locals.KO_INJEONG.forEach(function(item){
 					option(value=item)= L('theme_' + item)
 				- });
+				- locals.EN_INJEONG.forEach(function(item){
+					option(value=item)= L('theme_' + item)
+				- });
 			button#dict-search= L('SEARCH')
 			button#dict-injeong= L('injeongReq')
 	+Dialog('InviteDiag', 300, 420, L('invite'))

@@ -373,9 +373,7 @@ $(document).ready(function(){
 		var $target = $(e.currentTarget);
 		var value = $target.val();
 		
-		if(value > 8 && value <= 16){
-			$target.css('color', "#4444FF");
-		}else if(value < 2 || value > 16){
+		if(value < 2 || value > 8){
 			$target.css('color', "#FF4444");
 		}else{
 			$target.css('color', "");
@@ -385,9 +383,7 @@ $(document).ready(function(){
 		var $target = $(e.currentTarget);
 		var value = $target.val();
 		
-		if(value > 10 && value <= 20){
-			$target.css('color', "#4444FF");
-		}else if(value < 1 || value > 20){
+		if(value < 1 || value > 10){
 			$target.css('color', "#FF4444");
 		}else{
 			$target.css('color', "");

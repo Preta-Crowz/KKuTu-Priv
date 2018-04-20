@@ -147,10 +147,10 @@ DB.ready = function(){
 			}
 		}
 	});
-	Server.listen(3141);
+	Server.listen(GLOBAL.WEB_PORT);
 	if(Const.IS_SECURED) {
 		const options = Secure();
-		https.createServer(options, Server).listen(443);
+		https.createServer(options, Server).listen(GLOBAL.SSL_PORT);
 	}
 };
 Const.MAIN_PORTS.forEach(function(v, i){
@@ -265,6 +265,7 @@ Server.get("/servers", function(req, res){
 		list[i] = v.seek;
 	});
 	res.send({ list: list, max: Const.KKUTU_MAX });
+	/*res.send({ list: [4,0], max: 0.5 });*/
 });
 
 //볕뉘 수정 구문 삭제(274~353)
