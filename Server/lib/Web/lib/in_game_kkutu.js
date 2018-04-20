@@ -746,10 +746,10 @@ $(document).ready(function(){
 		var date = new Date($rec.time);
 		var blob = new Blob([ JSON.stringify($rec) ], { type: "text/plain" });
 		var url = URL.createObjectURL(blob);
-		var fileName = "KKuTu" + (
-			date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " "
-			+ date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds()
-		) + ".kkt";
+		var fileName = "Prj_KT-Replay-" + (
+			date.getFullYear() + "_" + (date.getMonth() + 1) + "_" + date.getDate() + "-"
+			+ date.getHours() + "_" + date.getMinutes() + "_" + date.getSeconds()
+		) + ".pktrf";
 		var $a = $("<a>").attr({
 			'download': fileName,
 			'href': url
