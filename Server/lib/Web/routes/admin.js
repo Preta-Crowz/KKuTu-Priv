@@ -133,6 +133,7 @@ Server.get("/gwalli/shop/:key", function(req, res){
 		});
 	});
 });
+
 Server.post("/gwalli/injeong", function(req, res){
 	if(!checkAdmin(req, res)) return;
 	if(req.body.pw != GLOBAL.PASS) return res.sendStatus(400);

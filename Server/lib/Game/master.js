@@ -1,6 +1,7 @@
 /**
  * Rule the words! KKuTu Online
- * Copyright (C) 2017 JJoriping(op@jjo.kr)
+ * Copyright (C) 2017 JJoriping(op
+ jjo.kr)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,7 +57,7 @@ const GUEST_PERMISSION = exports.GUEST_PERMISSION = {
 	'kickVote': true,
 	'wp': true
 };
-const ENABLE_ROUND_TIME = exports.ENABLE_ROUND_TIME = [ 10, 30, 60, 90, 120, 150 ];
+const ENABLE_ROUND_TIME = exports.ENABLE_ROUND_TIME = [ 10, 30, 60, 90, 120, 150, 300, 600 ];
 const ENABLE_FORM = exports.ENABLE_FORM = [ "S", "J" ];
 const MODE_LENGTH = exports.MODE_LENGTH = Const.GAME_TYPE.length;
 const PORT = process.env['KKUTU_PORT'];

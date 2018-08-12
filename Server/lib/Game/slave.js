@@ -54,7 +54,7 @@ const ENABLE_ROUND_TIME = Master.ENABLE_ROUND_TIME;
 const ENABLE_FORM = Master.ENABLE_FORM;
 const MODE_LENGTH = Master.MODE_LENGTH;
 
-JLog.info(`<< KKuTu Server:${Server.options.port} >>`);
+JLog.info(`<< KKuTu Server:${process.env['KKUTU_PORT']} >>`);
 
 process.on('uncaughtException', function(err){
 	var text = `:${process.env['KKUTU_PORT']} [${new Date().toLocaleString()}] ERROR: ${err.toString()}\n${err.stack}`;

@@ -92,7 +92,7 @@ $(document).ready(function(){
 		EXP.push(EXP[i-2] + getRequiredScore(i));
 	}
 	EXP[MAX_LEVEL - 1] = Infinity;
-	EXP.push(Infinity);
+	EXP.push(Infinity );
 	$stage = {
 		loading: $("#Loading"),
 		lobby: {
@@ -2848,6 +2848,7 @@ function userListBar(o, forInvite){
 function addonNickname($R, o){
 	if(o.equip['NIK']) $R.addClass("x-" + o.equip['NIK']);
 	if(o.equip['BDG'] == "b1_gm") $R.addClass("x-gm");
+	if(o.equip['BDG'] == "b0_pt") $R.addClass("x-pt");
 }
 function updateRoomList(refresh){
 	var i;

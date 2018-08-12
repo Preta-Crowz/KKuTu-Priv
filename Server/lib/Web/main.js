@@ -97,7 +97,7 @@ Server.use((req, res, next) => {
 		next();
 	}
 });
-if(GLOBAL.TRUST_PROXY) {
+if(GLOBAL.USE_PROXY) {
 	Server.set('trust proxy', GLOBAL.TRUST_PROXY)
 }
 /* use this if you want
@@ -235,7 +235,7 @@ Server.get("/", function(req, res){
 			'_page': "kkutu",
 			'_id': id,
 			'PORT': Const.MAIN_PORTS[server],
-			'HOST': req.hostname,
+			'HOST': Const.CUSTOM_HOST ? Const.HOSTNAME : req.hostname,
 			'PROTOCOL': Const.IS_SECURED ? 'wss' : 'ws',
 			'TEST': req.query.test,
 			'MOREMI_PART': Const.MOREMI_PART,
@@ -250,10 +250,10 @@ Server.get("/", function(req, res){
 			'KO_THEME': Const.KO_THEME,
 			'EN_THEME': Const.EN_THEME,
 			'IJP_EXCEPT': Const.IJP_EXCEPT,
-			'ogImage': "http://kkutu.kr/img/kkutu/logo.png",
-			'ogURL': "http://kkutu.kr/",
-			'ogTitle': "글자로 놀자! 끄투 온라인",
-			'ogDescription': "끝말잇기가 이렇게 박진감 넘치는 게임이었다니!"
+			'ogImage': Const.CUSTOM_OG ? Const.OG_IMAGE : "http://kkutu.kr/img/kkutu/logo.png",
+			'ogURL': Const.CUSTON_OG ? Const.OG_URL : "http://kkutu.kr/",
+			'ogTitle': Const.OG_TITLE,
+			'ogDescription': Const.OG_DESC
 		});
 	}
 });

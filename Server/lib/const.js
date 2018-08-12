@@ -19,6 +19,8 @@
 var GLOBAL = require("./sub/global.json");
 
 exports.KKUTU_MAX = 100;
+exports.CUSTOM_HOST = GLOBAL.CUSTOM_HOST;
+exports.HOSTNAME = GLOBAL.HOSTNAME;
 exports.MAIN_PORTS = GLOBAL.MAIN_PORTS;
 exports.TEST_PORT = 4040;
 exports.SPAM_CLEAR_DELAY = 1600;
@@ -41,13 +43,21 @@ exports.OPTIONS = {
 	'prv': { name: "Proverb" },
 	'str': { name: "Strict" },
 	'k32': { name: "Sami" },
-	'no2': { name: "No2" }
+	'no2': { name: "No2" },
+	'rms': { name: "RandomMission" },
+	'nrt': { name: "NoReturn" },
+	'lvl': { name: "Level" },
+	'leg': { name: "Leng" },
+	'rtu': { name: "RandomTurn" },
+	'uwd': { name: "UnknownWord" },
+	'upl': { name: "UnknownPlayer" }
 };
-exports.MOREMI_PART = [ 'back', 'eye', 'mouth', 'shoes', 'clothes', 'head', 'lhand', 'rhand', 'front' ];
+exports.MOREMI_PART = [ 'back', 'eye', 'mouth', 'shoes', 'clothes', 'head', 'lhand', 'rhand', 'front', 'buff' ];
 exports.CATEGORIES = [ "all", "spec", "skin", "badge", "head", "eye", "mouth", "clothes", "hs", "back" ];
 exports.AVAIL_EQUIP = [
 	"NIK", "BDG0", "BDG1", "BDG2", "BDG3", "BDG4",
-	"Mhead", "Meye", "Mmouth", "Mhand", "Mclothes", "Mshoes", "Mback"
+	"Mhead", "Meye", "Mmouth", "Mhand", "Mclothes", "Mshoes", "Mback",
+	"BUFF"
 ];
 exports.GROUPS = {
 	'spec': [ "PIX", "PIY", "PIZ", "CNS" ],
@@ -58,7 +68,8 @@ exports.GROUPS = {
 	'mouth': [ "Mmouth" ],
 	'clothes': [ "Mclothes" ],
 	'hs': [ "Mhand", "Mshoes" ],
-	'back': [ "Mback", "Mfront" ]
+	'back': [ "Mback", "Mfront" ],
+	'buff': [ "BUFF" ]
 };
 exports.RULE = {
 /*
@@ -71,114 +82,120 @@ exports.RULE = {
 		ewq: 현재 턴 나가면 라운드 종료?
 	}
 */
-	'EKT': { lang: "en",
+	'EKT': { lang: "en", // 영어 끄투
 		rule: "Classic",
-		opts: [ "man", "ext", "mis" ],
+		opts: [ "man", "ext", "mis", "rms", "lvl", "rtu",
+		"nrt", "uwd", "upl" ],
 		time: 1,
 		ai: true,
 		big: false,
 		ewq: true
 	},
-	'ESH': { lang: "en",
+	'ESH': { lang: "en", // 영어 끝말잇기
 		rule: "Classic",
-		opts: [ "ext", "mis" ],
+		opts: [ "ext", "mis", "rms", "nrt", "lvl", "rtu",
+		"uwd", "upl" ],
 		time: 1,
 		ai: true,
 		big: false,
 		ewq: true
 	},
-	'KKT': { lang: "ko",
+	'KKT': { lang: "ko", // 쿵쿵따
 		rule: "Classic",
-		opts: [ "man", "ext", "mis", "loa", "str", "k32" ],
+		opts: [ "man", "ext", "mis", "rms", "loa", "str",
+		"k32", "lvl", "nrt", "rtu", "upl" ],
 		time: 1,
 		ai: true,
 		big: false,
 		ewq: true
 	},
-	'KSH': { lang: "ko",
+	'KSH': { lang: "ko", // 한국어 끝말잇기
 		rule: "Classic",
-		opts: [ "man", "ext", "mis", "loa", "str" ],
+		opts: [ "man", "ext", "mis", "rms", "loa", "str",
+		"nrt", "lvl", "leg", "rtu", "uwd", "upl" ],
 		time: 1,
 		ai: true,
 		big: false,
 		ewq: true
 	},
-	'CSQ': { lang: "ko",
+	'CSQ': { lang: "ko", // 한국어 자음퀴즈
 		rule: "Jaqwi",
-		opts: [ "ijp" ],
+		opts: [ "ijp", "lvl" ],
 		time: 1,
 		ai: true,
 		big: false,
 		ewq: false
 	},
-	'KCW': { lang: "ko",
+	'KCW': { lang: "ko", // 한국어 십자말풀이
 		rule: "Crossword",
-		opts: [],
+		opts: [ "lvl" ],
 		time: 2,
 		ai: false,
 		big: true,
 		ewq: false
 	},
-	'KTY': { lang: "ko",
+	'KTY': { lang: "ko", // 한국어 타자대결
 		rule: "Typing",
-		opts: [ "prv" ],
+		opts: [ "prv", "lvl" ],
 		time: 1,
 		ai: false,
 		big: false,
 		ewq: false
 	},
-	'ETY': { lang: "en",
+	'ETY': { lang: "en", // 영어 타자대결
 		rule: "Typing",
-		opts: [ "prv" ],
+		opts: [ "prv", "lvl" ],
 		time: 1,
 		ai: false,
 		big: false,
 		ewq: false
 	},
-	'KAP': { lang: "ko",
+	'KAP': { lang: "ko", // 한국어 앞말잇기
 		rule: "Classic",
-		opts: [ "man", "ext", "mis", "loa", "str" ],
+		opts: [ "man", "ext", "mis", "rms", "loa", "str",
+		"nrt", "lvl", "leg", "rtu", "uwd", "upl" ],
 		time: 1,
 		ai: true,
 		big: false,
 		_back: true,
 		ewq: true
 	},
-	'HUN': { lang: "ko",
+	'HUN': { lang: "ko", // 훈민정음
 		rule: "Hunmin",
-		opts: [ "ext", "mis", "loa", "str" ],
+		opts: [ "ext", "mis", "rms", "loa", "str", "lvl",
+		"rtu", "upl" ],
 		time: 1,
 		ai: true,
 		big: false,
 		ewq: true
 	},
-	'KDA': { lang: "ko",
+	'KDA': { lang: "ko", // 한국어 단어 대결
 		rule: "Daneo",
-		opts: [ "ijp", "mis" ],
+		opts: [ "ijp", "mis", "rms", "lvl", "rtu", "upl" ],
 		time: 1,
 		ai: true,
 		big: false,
 		ewq: true
 	},
-	'EDA': { lang: "en",
+	'EDA': { lang: "en", // 영어 단어 대결
 		rule: "Daneo",
-		opts: [ "ijp", "mis" ],
+		opts: [ "ijp", "mis", "rms", "lvl", "rtu", "upl" ],
 		time: 1,
 		ai: true,
 		big: false,
 		ewq: true
 	},
-	'KSS': { lang: "ko",
+	'KSS': { lang: "ko", // 한국어 솎솎
 		rule: "Sock",
-		opts: [ "no2" ],
+		opts: [ "no2", "lvl" ],
 		time: 1,
 		ai: false,
 		big: true,
 		ewq: false
 	},
-	'ESS': { lang: "en",
+	'ESS': { lang: "en", // 영어 솎솎
 		rule: "Sock",
-		opts: [ "no2" ],
+		opts: [ "no2", "lvl" ],
 		time: 1,
 		ai: false,
 		big: true,

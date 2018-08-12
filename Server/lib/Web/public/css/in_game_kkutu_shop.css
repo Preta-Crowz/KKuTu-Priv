@@ -48,6 +48,10 @@
 .chat-item>.x-gm::before{ content: "[GM]"; color: #2F77D9; text-shadow: 0px 0px 2px #2AF; }
 .room-user-title>.x-gm::before{ content: "[GM]"; color: #2F77D9; text-shadow: 0px 0px 2px #2AF; }
 
+.x-pt .users-name::before{ content: "[PRETA]"; color: #00AEFF; text-shadow: 0px 0px 2px #00EAFF; }
+.chat-item>.x-pt::before{ content: "[PRETA]"; color: #00AEFF; text-shadow: 0px 0px 2px #00EAFF; }
+.room-user-title>.x-pt::before{ content: "[PRETA]"; color: #00AEFF text-shadow: 0px 0px 2px #00EAFF; }
+
 .x-red_name{ color: #FF3333; }
 .x-orange_name{ color: #FFA533; }
 .x-green_name{ color: #43C227; }

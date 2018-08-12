@@ -40,7 +40,8 @@ exports.getTitle = function(){
 	var l = my.rule;
 	var EXAMPLE;
 	var eng, ja;
-	
+	var gamemode = Const.GAME_TYPE[my.mode]
+
 	if(!l){
 		R.go("undefinedd");
 		return R;
@@ -52,7 +53,7 @@ exports.getTitle = function(){
 	EXAMPLE = Const.EXAMPLE_TITLE[l.lang];
 	my.game.dic = {};
 	
-	switch(Const.GAME_TYPE[my.mode]){
+	switch(gamemode){
 		case 'EKT':
 		case 'ESH':
 			eng = "^" + String.fromCharCode(97 + Math.floor(Math.random() * 26));
@@ -133,7 +134,7 @@ exports.roundReady = function(){
 		my.game.char = my.game.title[my.game.round - 1];
 		my.game.subChar = getSubChar.call(my, my.game.char);
 		my.game.chain = [];
-		if(my.opts.mission) my.game.mission = getMission(my.rule.lang);
+		if(my.opts.mission && !my.opts.randommission) my.game.mission = getMission(my.rule.lang);
 		if(my.opts.sami) my.game.wordLength = 2;
 		
 		my.byMaster('roundReady', {
@@ -153,7 +154,7 @@ exports.turnStart = function(force){
 	var si;
 	
 	if(!my.game.chain) return;
-	my.game.roundTime = Math.min(my.game.roundTime, Math.max(10000, 150000 - my.game.chain.length * 1500));
+	my.game.roundTime = Math.min(my.game.roundTime, Math.max(10000, 600000 - my.game.chain.length * 1500));
 	speed = my.getTurnSpeed(my.game.roundTime);
 	clearTimeout(my.game.turnTimer);
 	clearTimeout(my.game.robotTimer);
@@ -162,6 +163,8 @@ exports.turnStart = function(force){
 	my.game.turnAt = (new Date()).getTime();
 	if(my.opts.sami) my.game.wordLength = (my.game.wordLength == 3) ? 2 : 3;
 	
+	if(my.opts.randommission) my.game.mission = getMission(my.rule.lang);
+
 	my.byMaster('turnStart', {
 		turn: my.game.turn,
 		char: my.game.char,
@@ -248,12 +251,12 @@ exports.submit = function(client, text){
 				client.publish('turnEnd', {
 					ok: true,
 					value: text,
-					mean: $doc.mean,
-					theme: $doc.theme,
-					wc: $doc.type,
+					mean: $doc ? $doc.mean : null,
+					theme: $doc ? $doc.theme : null,
+					wc: $doc ? $doc.type : null,
 					score: score,
 					bonus: (my.game.mission === true) ? score - my.getScore(text, t, true) : 0,
-					baby: $doc.baby
+					baby: $doc ? $doc.baby : null
 				}, true);
 				if(my.game.mission === true){
 					my.game.mission = getMission(my.rule.lang);
@@ -261,10 +264,11 @@ exports.submit = function(client, text){
 				setTimeout(my.turnNext, my.game.turnTime / 6);
 				if(!client.robot){
 					client.invokeWordPiece(text, 1);
-					DB.kkutu[l].update([ '_id', text ]).set([ 'hit', $doc.hit + 1 ]).on();
+					try{DB.kkutu[l].update([ '_id', text ]).set([ 'hit', $doc.hit + 1 ]).on()}
+					catch(a){}
 				}
 			}
-			if(firstMove || my.opts.manner) getAuto.call(my, preChar, preSubChar, 1).then(function(w){
+			if(!my.opts.unknownword && (firstMove || my.opts.manner)) getAuto.call(my, preChar, preSubChar, 1).then(function(w){
 				if(w) approved();
 				else{
 					my.game.loading = false;
@@ -281,12 +285,20 @@ exports.submit = function(client, text){
 			client.publish('turnError', { code: code || 404, value: text }, true);
 		}
 		if($doc){
+			var gamemode = Const.GAME_TYPE[my.mode]
 			if(!my.opts.injeong && ($doc.flag & Const.KOR_FLAG.INJEONG)) denied();
 			else if(my.opts.strict && (!$doc.type.match(Const.KOR_STRICT) || $doc.flag >= 4)) denied(406);
 			else if(my.opts.loanword && ($doc.flag & Const.KOR_FLAG.LOANWORD)) denied(405);
-			else preApproved();
-		}else{
-			denied();
+			else if(my.opts.leng && (text.length > my.leng.max)) denied(410);
+			else if(my.opts.leng && (text.length < my.leng.min)) denied(411);
+			else if(my.opts.noreturn && (((gamemode == 'EKT') && ((text.substr(0,2) == text.substr((text.length-2),2))) || (text.substr(0,3) == text.substr((text.length-3),3))) || ((gamemode != 'EKT') && (text.substr(0,1) == text.substr((text.length-1),1))))) denied(412);
+			else {
+				if(my.opts.unknownword) denied()
+				else preApproved();
+			}
+		} else {
+			if(my.opts.unknownword) preApproved();
+			else denied();
 		}
 	}
 	function isChainable(){

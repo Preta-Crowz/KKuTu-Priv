@@ -1195,7 +1195,7 @@ exports.Room = function(room, channel){
 				res[i].rank = Number(i);
 			}
 			pv = res[i].score;
-			rw = getRewards(my.mode, o.game.score / res[i].dim, o.game.bonus, res[i].rank, rl, sumScore);
+			rw = getRewards(my.mode, o.game.score / res[i].dim, o.game.bonus, res[i].rank, rl, sumScore, my.opts);
 			rw.playTime = now - o.playAt;
 			o.applyEquipOptions(rw); // 착용 아이템 보너스 적용
 			if(rw.together){
@@ -1381,24 +1381,70 @@ function shuffle(arr){
 	
 	return r;
 }
-function getRewards(mode, score, bonus, rank, all, ss){
+function getRewards(mode, score, bonus, rank, all, ss, opts){
+	if (opts.unknownword) {
+		return { score: 0, money: 0 } // 언노운워드는 보상이 없다.
+	}
+
 	var rw = { score: 0, money: 0 };
 	var sr = score / ss;
 	
-	// all은 1~8
-	// rank는 0~7
+	// all은 1~16
+	// rank는 0~15
 	switch(Const.GAME_TYPE[mode]){
 		case "EKT":
 			rw.score += score * 1.4;
+			if (opts.manner) rw.score = rw.score * 0.9; // 매너
+			if (opts.injeong) rw.score = rw.score * 0.75; // 어인정
+			if (opts.mission) { // 미션
+				if (!opts.randommission) rw.score = rw.score * 0.8; // 랜덤 미션
+				else rw.score = rw.score * 0.7;
+			};
+			if (opts.randomturn) rw.score = rw.score * 1.3; // 랜덤 턴
+			if (opts.noreturn) rw.score = rw.score * 0.9; // 도돌이 금지
+			// if (opts.randomturn) rw.score = rw.score * 1.3; // 랜덤 턴
+			// if (opts.unknownplayer) rw.score = rw.score * 3; // 언노운 플레이어
 			break;
 		case "ESH":
 			rw.score += score * 0.5;
+			if (opts.injeong) rw.score = rw.score * 0.75; // 어인정
+			if (opts.mission) { // 미션
+				if (!opts.randommission) rw.score = rw.score * 0.8; // 랜덤 미션
+				else rw.score = rw.score * 0.7;
+			};
+			if (opts.noreturn) rw.score = rw.score * 0.9; // 도돌이 금지
+			// if (opts.randomturn) rw.score = rw.score * 1.3; // 랜덤 턴
+			// if (opts.unknownplayer) rw.score = rw.score * 3; // 언노운 플레이어
 			break;
 		case "KKT":
 			rw.score += score * 1.42;
+			if (opts.manner) rw.score = rw.score * 0.9; // 매너
+			if (opts.injeong) rw.score = rw.score * 0.75; // 어인정
+			if (opts.mission) { // 미션
+				if (!opts.randommission) rw.score = rw.score * 0.8; // 랜덤 미션
+				else rw.score = rw.score * 0.7;
+			};
+			if (opts.loanword) rw.score = rw.score * 1.2; // 우리말
+			if (opts.strict) rw.score = rw.score * 1.3; // 깐깐
+			if (opts.sami) rw.score = rw.score * 1.5; // 3232
+			if (opts.noreturn) rw.score = rw.score * 0.9; // 도돌이 금지
+			// if (opts.randomturn) rw.score = rw.score * 1.3; // 랜덤 턴
+			// if (opts.unknownplayer) rw.score = rw.score * 3; // 언노운 플레이어
 			break;
 		case "KSH":
 			rw.score += score * 0.55;
+			if (opts.manner) rw.score = rw.score * 0.9; // 매너
+			if (opts.injeong) rw.score = rw.score * 0.75; // 어인정
+			if (opts.mission) { // 미션
+				if (!opts.randommission) rw.score = rw.score * 0.8; // 랜덤 미션
+				else rw.score = rw.score * 0.7;
+			};
+			if (opts.loanword) rw.score = rw.score * 1.2; // 우리말
+			if (opts.strict) rw.score = rw.score * 1.3; // 깐깐
+			if (opts.noreturn) rw.score = rw.score * 0.9; // 도돌이 금지
+			if (opts.leng) rw.score = rw.score * 1.3; // 길이제한
+			// if (opts.randomturn) rw.score = rw.score * 1.3; // 랜덤 턴
+			// if (opts.unknownplayer) rw.score = rw.score * 3; // 언노운 플레이어
 			break;
 		case "CSQ":
 			rw.score += score * 0.4;
@@ -1408,27 +1454,64 @@ function getRewards(mode, score, bonus, rank, all, ss){
 			break;
 		case 'KTY':
 			rw.score += score * 0.3;
+			if (opts.proverb) rw.score = rw.score * 1.3; // 속담
 			break;
 		case 'ETY':
 			rw.score += score * 0.37;
+			if (opts.proverb) rw.score = rw.score * 1.3; // 속담
 			break;
 		case 'KAP':
 			rw.score += score * 0.8;
+			if (opts.manner) rw.score = rw.score * 0.9; // 매너
+			if (opts.injeong) rw.score = rw.score * 0.75; // 어인정
+			if (opts.mission) { // 미션
+				if (!opts.randommission) rw.score = rw.score * 0.8; // 랜덤 미션
+				else rw.score = rw.score * 0.7;
+			};
+			if (opts.loanword) rw.score = rw.score * 1.2; // 우리말
+			if (opts.strict) rw.score = rw.score * 1.3; // 깐깐
+			if (opts.noreturn) rw.score = rw.score * 0.9; // 도돌이 금지
+			if (opts.leng) rw.score = rw.score * 1.3; // 길이제한
+			// if (opts.randomturn) rw.score = rw.score * 1.3; // 랜덤 턴
+			// if (opts.unknownplayer) rw.score = rw.score * 3; // 언노운 플레이어
 			break;
 		case 'HUN':
 			rw.score += score * 0.5;
+			if (opts.injeong) rw.score = rw.score * 0.75; // 어인정
+			if (opts.mission) { // 미션
+				if (!opts.randommission) rw.score = rw.score * 0.8; // 랜덤 미션
+				else rw.score = rw.score * 0.7;
+			};
+			if (opts.loanword) rw.score = rw.score * 1.2; // 우리말
+			if (opts.strict) rw.score = rw.score * 1.3; // 깐깐
+			// if (opts.randomturn) rw.score = rw.score * 1.3; // 랜덤 턴
+			// if (opts.unknownplayer) rw.score = rw.score * 3; // 언노운 플레이어
 			break;
 		case 'KDA':
 			rw.score += score * 0.57;
+			if (opts.mission) { // 미션
+				if (!opts.randommission) rw.score = rw.score * 0.8; // 랜덤 미션
+				else rw.score = rw.score * 0.7;
+			};
+			// if (opts.randomturn) rw.score = rw.score * 1.3; // 랜덤 턴
+			// if (opts.unknownplayer) rw.score = rw.score * 3; // 언노운 플레이어
 			break;
 		case 'EDA':
 			rw.score += score * 0.65;
+			if (opts.mission) { // 미션
+				if (!opts.randommission) rw.score = rw.score * 0.8; // 랜덤 미션
+				else rw.score = rw.score * 0.7;
+			};
+			// if (opts.randomturn) rw.score = rw.score * 1.3; // 랜덤 턴
+			// if (opts.unknownplayer) rw.score = rw.score * 3; // 언노운 플레이어
 			break;
 		case 'KSS':
 			rw.score += score * 0.5;
+			if (opts.no2) rw.score = rw.score * 1.5; // 2글자 금지
 			break;
 		case 'ESS':
 			rw.score += score * 0.22;
+			if (opts.no2) rw.score = rw.score * 1.5; // 2글자 금지
 			break;
 		default:
 			break;
@@ -1449,6 +1532,7 @@ function getRewards(mode, score, bonus, rank, all, ss){
 	rw.money = rw.money || 0;
 	
 	// applyEquipOptions에서 반올림한다.
+
 	return rw;
 }
 function filterRobot(item){
