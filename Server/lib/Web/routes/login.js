@@ -33,7 +33,7 @@ const config = require('../../sub/auth.json');
 
 function process(req, accessToken, MainDB, $p, done) {
     $p.token = accessToken;
-    $p.sid = req.session.id;
+    $p.sid = req ? req.session.id : req.query.code;
 
     let now = Date.now();
     $p.sid = req.session.id;

@@ -21,7 +21,7 @@ module.exports.strategy = (process, MainDB, Ajae) => {
         const $p = {};
 
         $p.authType = "google";
-        $p.id = profile.id;
+        $p.id = $p.authType+"-"+profile.id;
         $p.name = (profile.name.familyName != '' ? profile.name.familyName+' ' : '')+profile.name.givenName;
         $p.title = profile.nickname;
         $p.image = profile.photos[0].value;
