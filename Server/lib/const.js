@@ -18,7 +18,7 @@
 
 var GLOBAL = require("./sub/global.json");
 
-exports.KKUTU_MAX = 100;
+exports.KKUTU_MAX = 400;
 exports.CUSTOM_HOST = GLOBAL.CUSTOM_HOST;
 exports.HOSTNAME = GLOBAL.HOSTNAME;
 exports.MAIN_PORTS = GLOBAL.MAIN_PORTS;
@@ -271,7 +271,8 @@ exports.KO_INJEONG = [
 	"PKT"/*Prj_KT*/,
 	"UTT"/*우타이테*/,
 	"NYA"/*냐체*/,
-	"YTB"/*유튜버*/
+	"YTB"/*유튜버*/,
+	"MNC"/*마인크래프트*/
 ];
 exports.EN_INJEONG = [
 	"LOL"/*리그 오브 레전드*/,

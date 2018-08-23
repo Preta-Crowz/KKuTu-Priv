@@ -18,11 +18,11 @@ module.exports.strategyConfig = {
 module.exports.strategy = (process, MainDB, Ajae) => {
     return (req, accessToken, refreshToken, profile, done) => {
         const $p = {};
-
+        
         $p.authType = "telegram";
         $p.id = $p.authType+"-"+profile.id;
-        $p.name = profile.displayName;
-        $p.title = profile.displayName;
+        $p.name = profile.username;
+        $p.title = profile.username;
         $p.image = profile._json.profile_image;
 
         process(req, accessToken, MainDB, $p, done);

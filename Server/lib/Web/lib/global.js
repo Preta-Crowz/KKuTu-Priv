@@ -30,9 +30,13 @@ var L;
 	function setCookie(cName, cValue, cDay){
         var expire = new Date();
 		
-        expire.setDate(expire.getDate() + cDay);
+		if(typeof cDay != 'undefined') {
+			expire.setDate(expire.getDate() + cDay + 1);
+		} else {
+			expire.setDate(expire.getDate() + 1);
+		}
         cookies = cName + '=' + escape(cValue) + '; path=/ ';
-        if(typeof cDay != 'undefined') cookies += ';expires=' + expire.toGMTString() + ';';
+        cookies += ';expires=' + expire.toGMTString() + ';';
 		
         document.cookie = cookies;
     }

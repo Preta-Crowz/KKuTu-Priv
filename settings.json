@@ -2,5 +2,5 @@
 	"server-name": "Prj_KT",
 	"web-num-cpu": 2,
 	"game-num-cpu": 2,
-	"game-num-inst": 2
+	"game-num-inst": 4
 }

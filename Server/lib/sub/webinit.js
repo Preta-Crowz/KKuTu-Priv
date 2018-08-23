@@ -82,6 +82,7 @@ function page(req, res, file, data){
 	}else{
 		data.page = file;
 	}
+	// JLog.log(`${JSON.stringify(req.headers)}`);
 	JLog.log(`${addr}@${sid.slice(0, 10)} ${data.page}, ${JSON.stringify(req.params)}`);
 	res.render(data.page, data, function(err, html){
 		if(err) res.send(err.toString());

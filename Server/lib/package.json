@@ -25,6 +25,7 @@
     "passport-instagram": "^1.0.0",
     "passport-kakao": "0.0.5",
     "passport-line": "0.0.4",
+    "passport-mediawiki-oauth": "^0.1.0",
     "passport-mixin": "^0.1.24",
     "passport-naver": "^1.0.6",
     "passport-outlook": "^2.1.0",

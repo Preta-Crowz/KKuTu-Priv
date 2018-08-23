@@ -8,7 +8,10 @@ Server/lib/Web/*old
 Server/lib/Web/public/*old
 Server/lib/sub/*.json
 Server/lib/Web/public/mp3host
-Server/lib/Web/public/naver*html
+Server/lib/Web/public/naver*.html
+Server/lib/Web/public/pinterest*.html
+Server/lib/Web/public/test
 Server/lib/Web/public/js/*.min.js
 Server/sec
 *.log
+work/*

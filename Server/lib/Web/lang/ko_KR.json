@@ -18,7 +18,9 @@
 		"SVLIST":	"프리서버 리스트",
 		
 		"TSV":	"제휴 서버",
-		"TSV_NONE":	"없음",
+		"TSV_SATS":	"사츠메가네 끄투",
+		"TSV_LETS":	"레츠고끄투",
+		"TSV_OURK":	"아워끄투",
 
 		"EGG":	"　",
 		"20G":	"이백억",
@@ -148,7 +150,7 @@
 		"withTwitch": "트위치 아이디로 로그인",
 		"withWindowslive": "윈도우 아이디로 로그인",
 		"login_kkutu": "글자로 놀자! 끄투 온라인을 이용하시려면 로그인을 해 주세요.",
-		"loginLegal": "로그인이 이루어지면 prjkt.zz.am에서 공지하는 <a href='/legal/agreement' target='_blank'>서비스 이용 약관</a> 및 <a href='/legal/privacy' target='_blank'>개인정보 취급 방침</a>에 동의하게 됩니다."
+		"loginLegal": "로그인이 이루어지면 prjkt.online에서 공지하는 <a href='/legal/agreement' target='_blank'>서비스 이용 약관</a> 및 <a href='/legal/privacy' target='_blank'>개인정보 취급 방침</a>에 동의하게 됩니다."
 	},
 	"loginfail": {
 		"title": "로그인 실패",
@@ -399,7 +401,7 @@
 		"kpm": "<label style='font-size: 11px;'>타/분</label>",
 		
 		"theme_IMS": "THE iDOLM@STER",
-		"theme_VOC": "VOCALOID",
+		"theme_VOC": "VOCALOID/UTAU",
 		"theme_KRR": "개구리 중사 케로로",
 		"theme_KTV": "국내 방송 프로그램",
 		"theme_NSK": "니세코이",
@@ -454,6 +456,7 @@
 		"theme_UTT": "WIP_ThemeCode_UTT",
 		"theme_NYA": "WIP_ThemeCode_NYA",
 		"theme_YTB": "WIP_ThemeCode_YTB",
+		"theme_MNC": "마인크래프트",
 
 		"theme_EAC": "EZ2AC",
 		"theme_DMX": "WIP_ThemeCode_DMX",
