@@ -14,4 +14,5 @@ Server/lib/Web/public/test
 Server/lib/Web/public/js/*.min.js
 Server/sec
 *.log
-work/*
+workspace
+not_k
