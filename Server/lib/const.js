@@ -20,7 +20,7 @@ var GLOBAL = require("./sub/global.json");
 
 exports.KKUTU_MAX = GLOBAL.MAX_USERS;
 exports.MAIN_PORTS = GLOBAL.MAIN_PORTS;
-exports.TEST_PORT = 4040;
+exports.TEST_PORT = GLOBAL.TEST_PORT;
 exports.SPAM_CLEAR_DELAY = 1600;
 exports.SPAM_ADD_DELAY = 750;
 exports.SPAM_LIMIT = 7;
