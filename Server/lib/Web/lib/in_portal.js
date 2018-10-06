@@ -16,9 +16,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+const GLOBAL = require("../../sub/global.json");
+
 (function(){
 	var $stage;
-	var LIMIT = 400;
+	var LIMIT;
 	var LIST;
 
 	$(document).ready(function(){
@@ -67,6 +69,7 @@
 
 			$stage.list.empty();
 			LIST = data.list;
+			LIMIT = data.max;
 			data.list.forEach(function(v, i){
 				var status = (v === null) ? "x" : "o";
 				var people = (status == "x") ? "-" : (v + " / " + LIMIT);
