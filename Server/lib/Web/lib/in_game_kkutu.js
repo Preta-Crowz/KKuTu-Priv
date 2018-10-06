@@ -2152,6 +2152,9 @@ function onMessage(data){
 			yell(data.value);
 			notice(data.value, L['yell']);
 			break;
+		case 'info':
+			notice(data.value, L['info']);
+			break;
 		case 'dying':
 			yell(L['dying']);
 			notice(L['dying'], L['yell']);

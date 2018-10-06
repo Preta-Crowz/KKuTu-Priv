@@ -72,22 +72,46 @@ process.on('uncaughtException', function(err){
 });
 function processAdmin(id, value){
 	var cmd, temp, i, j;
-	
-	value = value.replace(/^(#\w+\s+)?(.+)/, function(v, p1, p2){
-		if(p1) cmd = p1.slice(1).trim();
+	if (!value.startsWith("~")) return value;
+	value = value.replace(/^(~\w+\s+)?(.+)/, function(v, p1, p2){
+		if(p1) {
+			cmd = p1.slice(1).trim();
+		} else {
+			cmd = p2.substr(1);
+		};
 		return p2;
 	});
 	switch(cmd){
-		case "yell":
+		case "test":
+		case "테스트":
+			if(DIC[id]) {
+				DIC[id].send('info', { "value": "Administration Command Test" });
+			};
+			return null;
+		case "help":
+		case "도움말":
+			if(DIC[id]) {
+				DIC[id].send('info', { "value": "~help / ~도움말 : 이 메시지를 출력합니다." });
+				DIC[id].send('info', { "value": "~test / ~테스트 : 관리 명령어를 테스트합니다." });
+				DIC[id].send('info', { "value": "~notice / ~공지 : 서버의 모든 유저에게 해당 내용을 출력합니다." });
+				DIC[id].send('info', { "value": "~disconn / ~접속해제 : 해당 유저의 연결을 해제합니다." });
+				DIC[id].send('info', { "value": "~tailroom / ~방추적 : 해당 방의 정보를 출력하고, 추적합니다." });
+				DIC[id].send('info', { "value": "~tailuser / ~유저추적 : 해당 유저의 정보를 출력하고, 추적합니다." });
+			};
+			return null;
+		case "notice":
+		case "공지":
 			KKuTu.publish('yell', { value: value });
 			return null;
-		case "kill":
+		case "disconn":
+		case "접속해제":
 			if(temp = DIC[value]){
 				temp.socket.send('{"type":"error","code":410}');
 				temp.socket.close();
 			}
 			return null;
 		case "tailroom":
+		case "방추적":
 			if(temp = ROOM[value]){
 				if(T_ROOM[value] == id){
 					i = true;
@@ -97,6 +121,7 @@ function processAdmin(id, value){
 			}
 			return null;
 		case "tailuser":
+		case "유저추적":
 			if(temp = DIC[value]){
 				if(T_USER[value] == id){
 					i = true;
@@ -106,17 +131,18 @@ function processAdmin(id, value){
 				if(DIC[id]) DIC[id].send('tail', { a: i ? "tuX" : "tu", rid: temp.id, id: id, msg: temp.getData() });
 			}
 			return null;
-		case "dump":
+		/*case "dump":
+		case "덤프"
 			if(DIC[id]) DIC[id].send('yell', { value: "This feature is not supported..." });
-			/*Heapdump.writeSnapshot("/home/kkutu_memdump_" + Date.now() + ".heapsnapshot", function(err){
+			Heapdump.writeSnapshot("/home/kkutu_memdump_" + Date.now() + ".heapsnapshot", function(err){
 				if(err){
 					JLog.error("Error when dumping!");
 					return JLog.error(err.toString());
 				}
 				if(DIC[id]) DIC[id].send('yell', { value: "DUMP OK" });
 				JLog.success("Dumping success.");
-			});*/
-			return null;
+			});
+			return null;*/
 	}
 	return value;
 }
