@@ -73,7 +73,7 @@ process.on('uncaughtException', function(err){
 function processAdmin(id, value){
 	var cmd, temp, i, j;
 	if (!value.startsWith("~")) return value;
-	value = value.replace(/^(~\w+\s+)?(.+)/, function(v, p1, p2){
+	value = value.replace(/^(~[\w가-힣]+\s+)?(.+)/, function(v, p1, p2){
 		if(p1) {
 			cmd = p1.slice(1).trim();
 		} else {

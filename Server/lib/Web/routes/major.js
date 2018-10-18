@@ -253,7 +253,7 @@ Server.post("/cf", function(req, res){
 	var tray = (req.body.tray || "").split('|');
 	var i, o;
 	
-	if(tray.length < 1 || tray.length > 10) return res.json({ error: 400 });
+	if(tray.length < 1 || tray.length > 100) return res.json({ error: 400 });
 	MainDB.users.findOne([ '_id', uid ]).limit([ 'money', true ], [ 'box', true ]).on(function($user){
 		if(!$user) return res.json({ error: 400 });
 		if(!$user.box) $user.box = {};
@@ -332,7 +332,7 @@ function getCFRewards(word, level, blend){
 		}
 		cost = Math.round(cost * 0.2);
 	}else{
-		R.push({ key: "dictPage", value: Math.round(f.len * 0.6), rate: 1 });
+		R.push({ key: "dictPage", value: f.len, rate: 1 });
 		R.push({ key: "boxB4", value: 1, rate: Math.min(1, f.lev / 7) });
 		if(f.lev >= 5){
 			R.push({ key: "boxB3", value: 1, rate: Math.min(1, f.lev / 15) });

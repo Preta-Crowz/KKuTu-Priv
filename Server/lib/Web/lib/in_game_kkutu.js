@@ -35,7 +35,7 @@ var MOREMI_PART;
 var AVAIL_EQUIP;
 var RULE;
 var OPTIONS;
-var MAX_LEVEL = 360;
+var MAX_LEVEL = 20000000;
 var TICK = 30;
 var EXP = [];
 var BAD = new RegExp([ "느으*[^가-힣]*금마?", "니[^가-힣]*(엄|앰|엠)", "(ㅄ|ㅅㅂ|ㅂㅅ)", "미친(년|놈)?", "(병|븅|빙)[^가-힣]*신", "보[^가-힣]*지", "(새|섀|쌔|썌)[^가-힣]*(기|끼)", "섹[^가-힣]*스", "(시|씨|쉬|쒸)이*입?[^가-힣]*(발|빨|벌|뻘|팔|펄)", "십[^가-힣]*새", "씹", "(애|에)[^가-힣]*미", "자[^가-힣]*지", "존[^가-힣]*나", "좆|죶", "지랄", "창[^가-힣]*(녀|년|놈)", "fuck", "sex" ].join('|'), "g");
@@ -3243,7 +3243,7 @@ function drawCharFactory(){
 		var bd = $data.box[id];
 		var i, c = 0;
 		
-		if($data._tray.length >= 10) return fail(435);
+		if($data._tray.length >= 100) return fail(435);
 		for(i in $data._tray) if($data._tray[i] == id) c++;
 		if(bd - c > 0){
 			$data._tray.push(id);
