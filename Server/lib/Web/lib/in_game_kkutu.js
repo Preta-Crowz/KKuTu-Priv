@@ -3243,7 +3243,7 @@ function drawCharFactory(){
 		var bd = $data.box[id];
 		var i, c = 0;
 		
-		if($data._tray.length >= 6) return fail(435);
+		if($data._tray.length >= 10) return fail(435);
 		for(i in $data._tray) if($data._tray[i] == id) c++;
 		if(bd - c > 0){
 			$data._tray.push(id);
