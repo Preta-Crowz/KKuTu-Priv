@@ -147,13 +147,13 @@ block Middle
 			h4(style='width: 100%; height: 20px;')#quick-queue
 		div.dialog-bar.tail-button
 			button#quick-ok= L('OK')
-	+Dialog('RoomDiag', 300, 375)
+	+Dialog('RoomDiag', 300, 450)
 		div.dialog-bar
 			h4= L('roomTitle')
-			input#room-title(placeholder=(nick || L('guest'))+L('roomDefault'), maxlength=20)
+			input#room-title(placeholder=(nick || L('guest'))+L('roomDefault'), maxlength=100)
 		div.dialog-bar
 			h4= L('password')
-			input#room-pw(type='password', placeholder=L('password'), maxlength=20)
+			input#room-pw(type='password', placeholder=L('password'), maxlength=100)
 		div.dialog-bar
 			h4= L('userLimit')
 			input#room-limit(type='number', min=2, max=16, step=1, value=8)
@@ -179,8 +179,8 @@ block Middle
 				option(value=150)
 				option(value=300, style='color: #4444FF')
 				option(value=600, style='color: #4444FF')
-		div.dialog-bar(style='height: 59px;')
-			h4(style='height: 45px;')= L('misc')
+		div.dialog-bar(style='height: 134px;')
+			h4(style='height: 16px;')= L('misc')
 			- for(var i in locals.OPTIONS)
 				+GameOption(i, 'room')
 			div.dialog-opt#room-injpick-panel
@@ -247,7 +247,7 @@ block Middle
 	+Dialog('DictionaryDiag', 300, 300, L('dict'))
 		div.dialog-bar
 			h4= L('wpHere')
-			input#dict-input(style='width: 183px;', placeholder=L('wpInput'), maxlength=200)
+			input#dict-input(style='width: 183px;', placeholder=L('wpInput'), maxlength=500)
 		div.dialog-bar#dict-output(style='height: 195px; overflow-y: scroll; color: #BBBBBB; background-color: #111111;')
 		div.dialog-bar.tail-button
 			select#dict-theme(style='width: 86px;')
@@ -380,7 +380,7 @@ block Middle
 			input#game-input(placeholder=L('yourTurn')+' '+L('inputHere'))
 	+Product('Chat')
 		div#Chat
-		input#Talk(maxlength=200)
+		input#Talk(maxlength=5000)
 		button#ChatBtn= L('send')
 	div#ad
 

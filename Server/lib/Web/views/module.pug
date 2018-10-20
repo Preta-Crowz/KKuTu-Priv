@@ -28,12 +28,12 @@
 			{ key: 'TSV_LETS', href: "http://letsgokkutu2.kro.kr"},
 			{ key: 'TSV_OURK', href: "http://ourkkutu.kro.kr"},
 			{ key: 'TSV_PCKT', href: "http://pizzachicken.kro.kr:90"}
-		]},
+		]},/*
 		{ key: 'EGG', sub: [
 			{ key: '20G', href: "/20000000000.html" },
 			{ key: 'PRN', href: "/projectn.html" },
 			{ key: 'RSH', href: "/red.html" }
-		]},
+		]},*/
 		{ key: 'TPG', sub: [
 			{ key: 'NWK', href: "https://nekowiki.zz.am/" }
 		]}
@@ -81,12 +81,8 @@ mixin MMenu()
 		div.menu-btn(id='menu-item-GAMES')
 			+FA('bars')
 			+separator(10)
-			div.menu-sub-btn(onclick='location.href = "http://jjo.kr/";', style='margin: 7px 0px; height: 25px;')!= L('HOME')
-			div.menu-sub-btn(onclick='location.href = "http://kkutu.kr/";', style='margin: 7px 0px; height: 25px;')!= L('GAMES_KKUTU')
-			div.menu-sub-btn(onclick='location.href = "http://jjo.kr/gallery";', style='margin: 7px 0px; height: 25px;')!= L('GALLERY')
-		div#quick-search
-			input#quick-search-tf(placeholder=L('QUICK_HOLDER'))
-			button#quick-search-btn!= L('QUICK_BTN')
+			div.menu-sub-btn(onclick='location.href = "https://prjkt.online/";', style='margin: 7px 0px; height: 25px;')!= L('HOME')
+			div.menu-sub-btn(onclick='location.href = "https://jjo.kr/kkutu";', style='margin: 7px 0px; height: 25px;')!= L('SVL_S')
 		div#account
 			span#profile= SESSION.profile ? JSON.stringify(SESSION.profile) : '{}'
 			div#account-info
