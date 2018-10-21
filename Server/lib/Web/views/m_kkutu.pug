@@ -137,15 +137,14 @@ block Middle
 			select#quick-mode
 				- for(var i in locals.MODE)
 					option(value=Number(i))= L('mode' + locals.MODE[i])
-		div.dialog-bar(style='height: 59px;')
-			h4(style='height: 45px;')= L('misc')
+		div.dialog-bar(style='height: 110px;')
+			h4(style='height: 16px;')= L('misc')
 			- for(var i in locals.OPTIONS)
 				+GameOption(i, 'quick')
-		div.dialog-bar
+		div.dialog-bar(style='width:200px;')
 			h4(style='width: 100%; height: 20px;')#quick-status
-		div.dialog-bar
 			h4(style='width: 100%; height: 20px;')#quick-queue
-		div.dialog-bar.tail-button
+		div.dialog-bar.tail-button(style='width:100px;')
 			button#quick-ok= L('OK')
 	+Dialog('RoomDiag', 300, 450)
 		div.dialog-bar
