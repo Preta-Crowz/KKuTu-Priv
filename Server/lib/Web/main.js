@@ -86,7 +86,7 @@ Server.use((req, res, next) => {
 	next();
 });
 Server.use((req, res, next) => {
-	if(Const.IS_SECURED) {
+	/*if(Const.IS_SECURED) {
 		if(req.protocol == 'http') {
 			let url = 'https://'+req.get('host')+req.path;
 			res.status(302).redirect(url);
@@ -95,7 +95,8 @@ Server.use((req, res, next) => {
 		}
 	} else {
 		next();
-	}
+	}*/
+	next()
 });
 //볕뉘 수정 끝
 /* use this if you want
@@ -145,10 +146,10 @@ DB.ready = function(){
 			}
 		}
 	});
-	Server.listen(80);
+	Server.listen(5926);
 	if(Const.IS_SECURED) {
 		const options = Secure();
-		https.createServer(options, Server).listen(443);
+		https.createServer(options, Server).listen(5358);
 	}
 };
 Const.MAIN_PORTS.forEach(function(v, i){
