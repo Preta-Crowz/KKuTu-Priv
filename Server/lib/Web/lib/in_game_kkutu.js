@@ -92,7 +92,7 @@ $(document).ready(function(){
 		EXP.push(EXP[i-2] + getRequiredScore(i));
 	}
 	EXP[MAX_LEVEL - 1] = Infinity;
-	EXP.push(Infinity );
+	EXP.push(Infinity);
 	$stage = {
 		loading: $("#Loading"),
 		lobby: {
