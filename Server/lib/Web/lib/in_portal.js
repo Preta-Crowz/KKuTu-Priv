@@ -16,8 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-const GLOBAL = require("../../sub/global.json");
-
 (function(){
 	var $stage;
 	var LIMIT;
