@@ -20,8 +20,7 @@ const Spawn = require("child_process").spawn;
 const JLog = require("./lib/sub/jjlog");
 const PKG = require("./package.json");
 const LANG = require("../language.json");
-const SETTINGS = require("../settings.json");
-const GLOBAL = require("../lib/sub/global.json")
+const GLOBAL = require("./lib/sub/global.json");
 const SCRIPTS = {
 	'server-on': startServer,
 	'server-off': stopServer,
