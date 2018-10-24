@@ -556,6 +556,18 @@ function processClientRequest($c, msg) {
 					stable = false;
 				}
 				if (ENABLE_ROUND_TIME.indexOf(msg.time) == -1) stable = false;
+				if (msg.opts.randommission&&!msg.opts.mission) {
+					msg.code = 601;
+					stable = false;
+				}
+				if (msg.opts.level
+					||msg.opts.leng
+					||msg.opts.randomturn
+					||msg.opts.unknownplayer
+					) {
+					msg.code = 600
+					stable = false
+				}
 			}
 			if (msg.type == 'enter') {
 				if (msg.id || stable) $c.enter(msg, msg.spectate);

@@ -1,6 +1,6 @@
 {
 	"GLOBAL": {
-		"GPL": "<div style='color: #666;'>글자로 놀자! 끄투 온라인 Copyright (C) 2017-2018 CrowZ(preta@crowz.r-e.kr)<br>이 프로그램은 제품에 대한 어떠한 형태의 보증도 제공되지 않습니다.<br>이 프로그램은 자유 소프트웨어이며 배포 규정을 만족시키는 조건 아래 자유롭게 재배포할 수 있습니다.<br>이에 대한 자세한 사항은 본 프로그램의 구현을 담은 다음 레포지토리에서 확인하십시오: <a target='_blank' href='https://github.com/Preta-Crowz/Prj_KT'>https://github.com/Preta-Crowz/Prj_KT</a></div>",
+		"GPL": "<div style='color: #666;'>글자로 놀자! 끄투 온라인 Copyright (C) 2017-2018 CrowZ(preta@crowz.r-e.kr)<br>이 프로그램은 제품에 대한 어떠한 형태의 보증도 제공되지 않습니다.<br>이 프로그램은 자유 소프트웨어이며 배포 규정을 만족시키는 조건 아래 자유롭게 재배포할 수 있습니다.<br>이에 대한 자세한 사항은 본 프로그램의 구현을 담은 다음 레포지토리에서 확인하십시오: <a target='_blank' href='https://github.com/Preta-Crowz/KKuTu-Priv/tree/Prj_KT'>https://github.com/Preta-Crowz/KKuTu-Priv/tree/Prj_KT</a></div>",
 
 		"CREATOR":	"개발자 블로그",
 		"HOME":		"FA{home}",
@@ -276,6 +276,8 @@
 		"error_455": "접속해 있지 않은 친구만 삭제할 수 있습니다.",
 		"error_500": "서버 점검 혹은 업데이트가 진행 중입니다.",
 		"error_555": "공사 중입니다! ㅠㅠ",
+		"error_600": "개발 중인 규칙은 사용 할 수 없습니다.",
+		"error_601": "랜덤미션은 미션과 함께 사용해야합니다.",
 		"turnError_402": "첫 턴 한방 금지",
 		"turnError_403": "한방 단어",
 		"turnError_405": "외래어",
