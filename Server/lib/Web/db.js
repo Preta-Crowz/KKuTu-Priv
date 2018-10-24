@@ -71,7 +71,7 @@ Pub.ready = function(isPub){
 			DB.kkutu_cw = {};
 			DB.kkutu_manner = {};
 			
-			DB.redis = noRedis ? FAKE_REDIS : new redisAgent.Table("KKuTu_Score");
+			DB.redis = noRedis ? FAKE_REDIS : new redisAgent.Table("NaengE_Score");
 			for(i in LANG){
 				DB.kkutu[LANG[i]] = new mainAgent.Table("kkutu_"+LANG[i]);
 				DB.kkutu_cw[LANG[i]] = new mainAgent.Table("kkutu_cw_"+LANG[i]);
