@@ -565,8 +565,8 @@ function processClientRequest($c, msg) {
 					||msg.opts.randomturn
 					||msg.opts.unknownplayer
 					) {
-					msg.code = 600
-					stable = false
+					msg.code = 600;
+					stable = false;
 				}
 			}
 			if (msg.type == 'enter') {
