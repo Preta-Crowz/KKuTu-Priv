@@ -19,6 +19,8 @@
 var GLOBAL = require("./sub/global.json");
 
 exports.KKUTU_MAX = GLOBAL.MAX_USERS;
+exports.CUSTOM_HOST = GLOBAL.CUSTOM_HOST;
+exports.HOSTNAME = GLOBAL.HOSTNAME;
 exports.MAIN_PORTS = GLOBAL.MAIN_PORTS;
 exports.TEST_PORT = GLOBAL.TEST_PORT;
 exports.SPAM_CLEAR_DELAY = 1600;
