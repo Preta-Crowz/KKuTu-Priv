@@ -86,7 +86,7 @@ exports.RULE = {
 	'EKT': { lang: "en", // 영어 끄투
 		rule: "Classic",
 		opts: [ "man", "ext", "mis", "rms", "lvl", "rtu",
-		"nrt", "uwd", "upl" ],
+		"nrt", "uwd", "upl", "rtn" ],
 		time: 1,
 		ai: true,
 		big: false,
@@ -154,7 +154,7 @@ exports.RULE = {
 	'KAP': { lang: "ko", // 한국어 앞말잇기
 		rule: "Classic",
 		opts: [ "man", "ext", "mis", "rms", "loa", "str",
-		"nrt", "lvl", "leg", "rtu", "uwd", "upl" ],
+		"nrt", "lvl", "leg", "rtu", "uwd", "upl", "rtn" ],
 		time: 1,
 		ai: true,
 		big: false,
