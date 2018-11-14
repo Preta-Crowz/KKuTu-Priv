@@ -296,14 +296,14 @@ exports.submit = function(client, text){
 			else if(my.opts.leng && (text.length < my.leng.min)) denied(411);
 			else if(my.opts.noreturn && (((gamemode == 'EKT') && ((text.substr(0,2) == text.substr((text.length-2),2))) || (text.substr(0,3) == text.substr((text.length-3),3))) || ((gamemode != 'EKT') && (text.substr(0,1) == text.substr((text.length-1),1))))) denied(412);
 			else {
-				if(my.opts.unknownword) denied()
-				else if (!check_word(text)) denied(413)
+				if(my.opts.unknownword) denied(414);
+				else if (!check_word(text)) denied(413);
 				else preApproved();
 			}
 		} else {
 			if(my.opts.unknownword){
-				if (check_word(text)) preApproved()
-				else denied(413)
+				if (check_word(text)) preApproved();
+				else denied(413);
 			}
 			else denied();
 		}
