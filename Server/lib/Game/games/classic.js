@@ -101,7 +101,7 @@ exports.getTitle = function(){
 		var i, list = [];
 		var len;
 		
-		/* ºÎÇÏ°¡ ³Ê¹« °É¸°´Ù¸é ÁÖ¼®À» Ç®ÀÚ.
+		/* ÂºÃÃ‡ÃÂ°Â¡ Â³ÃŠÂ¹Â« Â°Ã‰Â¸Â°Â´Ã™Â¸Ã© ÃÃ–Â¼Â®Ã€Â» Ã‡Â®Ã€Ãš.
 		R.go(true);
 		return R;
 		*/
@@ -284,6 +284,9 @@ exports.submit = function(client, text){
 			my.game.loading = false;
 			client.publish('turnError', { code: code || 404, value: text }, true);
 		}
+		function check_word(word){
+			return word.match(/^[ \-\_0-9A-Za-zã-ãƒ¾ã„±-ã…£ê°€-í£]*$/)
+		}
 		if($doc){
 			var gamemode = Const.GAME_TYPE[my.mode]
 			if(!my.opts.injeong && ($doc.flag & Const.KOR_FLAG.INJEONG)) denied();
@@ -294,10 +297,14 @@ exports.submit = function(client, text){
 			else if(my.opts.noreturn && (((gamemode == 'EKT') && ((text.substr(0,2) == text.substr((text.length-2),2))) || (text.substr(0,3) == text.substr((text.length-3),3))) || ((gamemode != 'EKT') && (text.substr(0,1) == text.substr((text.length-1),1))))) denied(412);
 			else {
 				if(my.opts.unknownword) denied()
+				else if (!check_word(text)) denied(413)
 				else preApproved();
 			}
 		} else {
-			if(my.opts.unknownword) preApproved();
+			if(my.opts.unknownword){
+				if (check_word(text)) preApproved()
+				else denied(413)
+			}
 			else denied();
 		}
 	}
@@ -424,9 +431,9 @@ function getMission(l){
 }
 function getAuto(char, subc, type){
 	/* type
-		0 ¹«ÀÛÀ§ ´Ü¾î ÇÏ³ª
-		1 Á¸Àç ¿©ºÎ
-		2 ´Ü¾î ¸ñ·Ï
+		0 Â¹Â«Ã€Ã›Ã€Â§ Â´ÃœÂ¾Ã® Ã‡ÃÂ³Âª
+		1 ÃÂ¸Ã€Ã§ Â¿Â©ÂºÃ
+		2 Â´ÃœÂ¾Ã® Â¸Ã±Â·Ã
 	*/
 	var my = this;
 	var R = new Lizard.Tail();
@@ -457,7 +464,7 @@ function getAuto(char, subc, type){
 	if(!char){
 		console.log(`Undefined char detected! key=${key} type=${type} adc=${adc}`);
 	}
-	MAN.findOne([ '_id', char || "¡Ú" ]).on(function($mn){
+	MAN.findOne([ '_id', char || "Â¡Ãš" ]).on(function($mn){
 		if($mn && bool){
 			if($mn[key] === null) produce();
 			else R.go($mn[key]);
@@ -557,12 +564,12 @@ function getSubChar(char){
 			ca = [ Math.floor(k/28/21), Math.floor(k/28)%21, k%28 ];
 			cb = [ ca[0] + 0x1100, ca[1] + 0x1161, ca[2] + 0x11A7 ];
 			cc = false;
-			if(cb[0] == 4357){ // ¤©¿¡¼­ ¤¤, ¤·
+			if(cb[0] == 4357){ // Â¤Â©Â¿Â¡Â¼Â­ Â¤Â¤, Â¤Â·
 				cc = true;
 				if(RIEUL_TO_NIEUN.includes(cb[1])) cb[0] = 4354;
 				else if(RIEUL_TO_IEUNG.includes(cb[1])) cb[0] = 4363;
 				else cc = false;
-			}else if(cb[0] == 4354){ // ¤¤¿¡¼­ ¤·
+			}else if(cb[0] == 4354){ // Â¤Â¤Â¿Â¡Â¼Â­ Â¤Â·
 				if(NIEUN_TO_IEUNG.indexOf(cb[1]) != -1){
 					cb[0] = 4363;
 					cc = true;
