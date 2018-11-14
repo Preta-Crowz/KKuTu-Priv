@@ -415,6 +415,8 @@
 		"explUnknownWord": "사전에 없는 단어만 입력 가능합니다. 보상을 받을 수 없습니다.",
 		"optUnknownPlayer": "언노운 플레이어",
 		"explUnknownPlayer": "캐릭터, 턴 알림, 입력창을 비활성화합니다. 경험치 배율은 300%입니다. / 개발 중",
+		"optReturns": "리턴",
+		"explReturns": "이미 사용한 단어를 다시 사용 가능하게 합니다. 경험치 배율은 25%입니다.",
 
 		"hidden": "(미공개)",
 		"pickInjeong": "주제 선택",

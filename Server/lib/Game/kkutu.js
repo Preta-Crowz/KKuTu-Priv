@@ -1445,6 +1445,7 @@ function getRewards(mode, score, bonus, rank, all, ss, opts){
 			if (opts.leng) rw.score = rw.score * 1.3; // 길이제한
 			// if (opts.randomturn) rw.score = rw.score * 1.3; // 랜덤 턴
 			// if (opts.unknownplayer) rw.score = rw.score * 3; // 언노운 플레이어
+			if (opts.returns) rw.score = rw.score * 0.25 // 리턴
 			break;
 		case "CSQ":
 			rw.score += score * 0.4;

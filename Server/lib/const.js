@@ -50,7 +50,8 @@ exports.OPTIONS = {
 	'leg': { name: "Leng" },
 	'rtu': { name: "RandomTurn" },
 	'uwd': { name: "UnknownWord" },
-	'upl': { name: "UnknownPlayer" }
+	'upl': { name: "UnknownPlayer" },
+	'rtn': { name: "Returns" }
 };
 exports.MOREMI_PART = [ 'back', 'eye', 'mouth', 'shoes', 'clothes', 'head', 'lhand', 'rhand', 'front', 'buff' ];
 exports.CATEGORIES = [ "all", "spec", "skin", "badge", "head", "eye", "mouth", "clothes", "hs", "back" ];
@@ -112,7 +113,7 @@ exports.RULE = {
 	'KSH': { lang: "ko", // 한국어 끝말잇기
 		rule: "Classic",
 		opts: [ "man", "ext", "mis", "rms", "loa", "str",
-		"nrt", "lvl", "leg", "rtu", "uwd", "upl" ],
+		"nrt", "lvl", "leg", "rtu", "uwd", "upl", "rtn" ],
 		time: 1,
 		ai: true,
 		big: false,
