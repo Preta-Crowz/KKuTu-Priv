@@ -19,10 +19,8 @@
 		"SVL_S":	"서버목록",
 		
 		"TSV":	"제휴 서버",
-		"TSV_SATS":	"사츠메가네 끄투",
-		"TSV_LETS":	"레츠고끄투",
-		"TSV_OURK":	"아워끄투",
-		"TSV_PCKT":	"피자치킨끄투",
+		"TSV_STKT":	"STKTonline",
+		"TSV_KTWL":	"끄투월드",
 
 		"EGG":	"　",
 		"20G":	"이백억",
