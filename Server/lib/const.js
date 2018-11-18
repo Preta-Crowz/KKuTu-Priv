@@ -61,6 +61,11 @@ exports.GROUPS = {
 	'hs': [ "Mhand", "Mshoes" ],
 	'back': [ "Mback", "Mfront" ]
 };
+exports.CUSTOM_OG = GLOBAL.CUSTOM_OG
+exports.OG_IMAGE = exports.CUSTOM_OG ? GLOBAL.OG_IMAGE : "http://kkutu.kr/img/kkutu/logo.png",
+exports.OG_URL = exports.CUSTON_OG ? GLOBAL.OG_URL : "http://kkutu.kr/",
+exports.OG_TITLE = exports.CUSTON_OG ? GLOBAL.OG_TITLE : "글자로 놀자! 끄투 온라인",
+exports.OG_DESC = exports.CUSTON_OG ? GLOBAL.OG_DESC : "끝말잇기가 이렇게 박진감 넘치는 게임이었다니!"
 exports.RULE = {
 /*
 	유형: { lang: 언어,
