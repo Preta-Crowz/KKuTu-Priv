@@ -123,6 +123,8 @@
 		
 		"GROUP_PIX": "글자 조각",
 		"GROUP_CNS": "소모품",
+
+		"GROUP_BUFF": "버프",
 		
 		"GROUP_NIK": "이름 스킨",
 		"GROUP_BDG1": "보물 휘장",
@@ -649,6 +651,7 @@
 		"category_clothes": "옷",
 		"category_hs": "손발",
 		"category_back": "배경",
+		"category_buff": "버프",
 		"equipped": "<font style='color: #FFB861;'> (착용 중)</font>",
 		"sureEquip": "다음 항목을 착용합니다",
 		"sureUnequip": "다음 항목을 착용 해제합니다",
