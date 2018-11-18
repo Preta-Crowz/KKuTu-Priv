@@ -3,7 +3,7 @@
 	"WEB_CPU": 1,
 	"GAME_CPU": 1,
 	"CUSTOM_HOST": false,
-	"HOSTNAME": "Your domain if using custom host"
+	"HOSTNAME": "Your domain if using custom host",
 	"MAIN_PORTS": [ 8080 ],
 	"TEST_PORT": 4040,
 	"ADMIN": [ "Input admin id here" ],
