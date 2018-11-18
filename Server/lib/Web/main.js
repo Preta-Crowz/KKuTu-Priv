@@ -250,8 +250,8 @@ Server.get("/", function(req, res){
 			'KO_THEME': Const.KO_THEME,
 			'EN_THEME': Const.EN_THEME,
 			'IJP_EXCEPT': Const.IJP_EXCEPT,
-			'ogImage': Const.CUSTOM_OG ? Const.OG_IMAGE : "http://kkutu.kr/img/kkutu/logo.png",
-			'ogURL': Const.CUSTON_OG ? Const.OG_URL : "http://kkutu.kr/",
+			'ogImage': Const.OG_IMAGE,
+			'ogURL': Const.OG_URL,
 			'ogTitle': Const.OG_TITLE,
 			'ogDescription': Const.OG_DESC
 		});
