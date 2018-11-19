@@ -230,9 +230,12 @@ function blendWord(word){
 	var lang = parseLanguage(word);
 	var i, kl = [];
 	var kr = [];
-	
-	if(lang == "en") return String.fromCharCode(97 + Math.floor(Math.random() * 26));
-	if(lang == "ko"){
+	var spChar = ["-","_","・","ー"];
+
+	if(lang == "spch") {
+		return spChar[Math.floor(Math.random() * spChar.length)]
+	}
+	if(lang == "ko-c"){
 		for(i=word.length-1; i>=0; i--){
 			var k = word.charCodeAt(i) - 0xAC00;
 			
@@ -243,9 +246,28 @@ function blendWord(word){
 		});
 		return String.fromCharCode(((kr[0] * 21) + kr[1]) * 28 + kr[2] + 0xAC00);
 	}
+	if(lang == "en-c") { return randChar("A", "Z") }
+	if(lang == "en-s") { return randChar("a", "z") }
+	if(lang == "ja-h") { return randChar("ぁ", "ゔ") }
+	if(lang == "ja-k") { return randChar("ァ", "ヺ") }
+	if(lang == "ko-l") { return randChar("ㄱ", "ㅣ") }
+	if(lang == "numb") { return randChar("0", "9") }
+	return "ERROR:CONTACT_ADMIN"
+}
+function randChar(first,end){
+	var fcode = first.charCodeAt(0)
+	var ecode = end.charCodeAt(0)
+	return String.fromCharCode(fcode + Math.floor(Math.random() * ecode-fcode));
 }
 function parseLanguage(word){
-	return word.match(/[a-zA-Z]/) ? "en" : "ko";
+	if (word.match(/[A-Z]/)) return "en-c"
+	if (word.match(/[a-z]/)) return "en-s"
+	if (word.match(/[ぁ-ゔ]/)) return "ja-h"
+	if (word.match(/[ァ-ヺ]/)) return "ja-k"
+	if (word.match(/[ㄱ-ㅣ]/)) return "ko-l"
+	if (word.match(/[가-힣]/)) return "ko-c"
+	if (word.match(/[0-9]/)) return "numb"
+	return "spch"
 }
 Server.post("/cf", function(req, res){
 	if(!req.session.profile) return res.json({ error: 400 });
@@ -267,7 +289,7 @@ Server.post("/cf", function(req, res){
 			req[tray[i]] = (req[tray[i]] || 0) + 1;
 			if(($user.box[tray[i]] || 0) < req[tray[i]]) return res.json({ error: 434 });
 		}
-		MainDB.kkutu[parseLanguage(word)].findOne([ '_id', word ]).on(function($dic){
+		MainDB.kkutu[parseLanguage(word).split("-")[0]].findOne([ '_id', word ]).on(function($dic){
 			if(!$dic){
 				if(word.length == 3){
 					blend = true;
