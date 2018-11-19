@@ -18,6 +18,7 @@
 
 var MainDB	 = require("../db");
 var JLog	 = require("../../sub/jjlog");
+var Const = require('../../const');
 
 exports.run = function(Server, page){
 
@@ -53,6 +54,10 @@ Server.post("/consume/:id", function(req, res){
 function useItem($user, $item, gid){
 	var R = { gain: [] };
 	
+    function randchar() {
+        return Const.AllChar[Math.floor(Math.random() * Const.AllChar.length)]
+    }
+
 	switch($item._id){
 		case 'boxB2':
 			got(pick([ 'b2_fire', 'b2_metal' ]), 1, 604800);
@@ -69,6 +74,16 @@ function useItem($user, $item, gid){
 			break;
         case 'dictCpn100':
             got('dictPage', 100, 0)
+            break;
+        case 'randC':
+            got('$WPC'+randchar(), 1, 0)
+            break;
+        case 'randB':
+            got('$WPB'+randchar(), 1, 0)
+            break;
+        case 'randA':
+            got('$WPA'+randchar(), 1, 0)
+            break;
 		default:
 			JLog.warn(`Unhandled consumption type: ${$item._id}`);
 	}
