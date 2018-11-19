@@ -228,11 +228,12 @@ Server.post("/payback/:id", function(req, res){
 });
 function blendWord(word){
 	var lang = parseLanguage(word);
+	if (!lang) return "ERROR:CONTACT_ADMIN"
 	var i, kl = [];
 	var kr = [];
 	var spChar = ["-","_","・","ー"];
 
-	if(lang == "spch") {
+	if(lang == "sp-g") {
 		return spChar[Math.floor(Math.random() * spChar.length)]
 	}
 	if(lang == "ko-c"){
@@ -251,23 +252,24 @@ function blendWord(word){
 	if(lang == "ja-h") { return randChar("ぁ", "ゔ") }
 	if(lang == "ja-k") { return randChar("ァ", "ヺ") }
 	if(lang == "ko-l") { return randChar("ㄱ", "ㅣ") }
-	if(lang == "numb") { return randChar("0", "9") }
+	if(lang == "no-g") { return randChar("0", "9") }
 	return "ERROR:CONTACT_ADMIN"
 }
 function randChar(first,end){
 	var fcode = first.charCodeAt(0)
 	var ecode = end.charCodeAt(0)
-	return String.fromCharCode(fcode + Math.floor(Math.random() * ecode-fcode));
+	return String.fromCharCode(fcode + Math.floor(Math.random() * (ecode-fcode)));
 }
 function parseLanguage(word){
-	if (word.match(/[A-Z]/)) return "en-c"
-	if (word.match(/[a-z]/)) return "en-s"
-	if (word.match(/[ぁ-ゔ]/)) return "ja-h"
-	if (word.match(/[ァ-ヺ]/)) return "ja-k"
-	if (word.match(/[ㄱ-ㅣ]/)) return "ko-l"
-	if (word.match(/[가-힣]/)) return "ko-c"
-	if (word.match(/[0-9]/)) return "numb"
-	return "spch"
+	if (word.match(/^[A-Z]*$/)) return "en-c"
+	if (word.match(/^[a-z]*$/)) return "en-s"
+	if (word.match(/^[ぁ-ゔ]*$/)) return "ja-h"
+	if (word.match(/^[ァ-ヺ]*$/)) return "ja-k"
+	if (word.match(/^[ㄱ-ㅣ]*$/)) return "ko-l"
+	if (word.match(/^[가-힣]*$/)) return "ko-c"
+	if (word.match(/^[0-9]*$/)) return "no-g"
+	if (word.match(/^[\-\_\・\ー]*$/)) return "sp-g"
+	return null
 }
 Server.post("/cf", function(req, res){
 	if(!req.session.profile) return res.json({ error: 400 });
@@ -289,7 +291,10 @@ Server.post("/cf", function(req, res){
 			req[tray[i]] = (req[tray[i]] || 0) + 1;
 			if(($user.box[tray[i]] || 0) < req[tray[i]]) return res.json({ error: 434 });
 		}
-		MainDB.kkutu[parseLanguage(word).split("-")[0]].findOne([ '_id', word ]).on(function($dic){
+		var lang = parseLanguage(word)
+		if (!lang) return res.json({ error: 439 });
+		lang = lang.split("-")[0]
+		function final($dic){
 			if(!$dic){
 				if(word.length == 3){
 					blend = true;
@@ -312,7 +317,10 @@ Server.post("/cf", function(req, res){
 			MainDB.users.update([ '_id', uid ]).set([ 'money', $user.money ], [ 'box', $user.box ]).on(function($res){
 				res.send({ result: 200, box: $user.box, money: $user.money, gain: gain });
 			});
-		});
+		}
+		if(lang == "ko"|| lang == "en"){
+			final(MainDB.kkutu[lang].findOne([ '_id', word ]))
+		} else final(null)
 	});
 	// res.send(getCFRewards(req.params.word, Number(req.query.l || 0)));
 });
