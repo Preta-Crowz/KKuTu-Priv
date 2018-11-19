@@ -360,3 +360,27 @@ exports.WP_REWARD = function(){
 exports.getRule = function(mode){
 	return exports.RULE[exports.GAME_TYPE[mode]];
 };
+AllChar = []
+var i;
+AllChar.push(String.fromCharCode(20)) // 공백
+AllChar.push(String.fromCharCode(45)) // 하이픈
+AllChar.push(String.fromCharCode(95)) // 언더바
+for(i=48;i<57;i++){ // 영어 대문자
+	AllChar.push(String.fromCharCode(i))
+}
+for(i=97;i<122;i++){ // 영어 소문자
+	AllChar.push(String.fromCharCode(i))
+}
+for(i=12353;i<12436;i++){ // 히라가나
+	AllChar.push(String.fromCharCode(i))
+}
+for(i=12449;i<12540;i++){ // 가타카나
+	AllChar.push(String.fromCharCode(i))
+}
+for(i=12593;i<12643;i++){ // 한글 자모
+	AllChar.push(String.fromCharCode(i))
+}
+for(i=44032;i<55203;i++){ // 완성형 한글
+	AllChar.push(String.fromCharCode(i))
+}
+exports.AllChar = AllChar
