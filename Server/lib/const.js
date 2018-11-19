@@ -61,7 +61,7 @@ exports.AVAIL_EQUIP = [
 	"buff"
 ];
 exports.GROUPS = {
-	'spec': [ "PIX", "PIY", "PIZ", "CNS" ],
+	'spec': [ "PIX", "PIY", "PIZ", "CNS", "buff" ],
 	'skin': [ "NIK" ],
 	'badge': [ "BDG0", "BDG1", "BDG2", "BDG3", "BDG4" ],
 	'head': [ "Mhead" ],
@@ -70,7 +70,6 @@ exports.GROUPS = {
 	'clothes': [ "Mclothes" ],
 	'hs': [ "Mhand", "Mshoes" ],
 	'back': [ "Mback", "Mfront" ],
-	'buff': [ "buff" ]
 };
 exports.CUSTOM_OG = GLOBAL.CUSTOM_OG
 exports.OG_IMAGE = exports.CUSTOM_OG ? GLOBAL.OG_IMAGE : "http://kkutu.kr/img/kkutu/logo.png",
