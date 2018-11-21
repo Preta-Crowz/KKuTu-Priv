@@ -231,7 +231,7 @@ function blendWord(word){
 	if (!lang) return "ERROR:CONTACT_ADMIN"
 	var i, kl = [];
 	var kr = [];
-	var spChar = ["-","_","・","ー"];
+	var spChar = [" ","-","_","・","ー"];
 
 	if(lang == "sp-g") {
 		return spChar[Math.floor(Math.random() * spChar.length)]
@@ -268,7 +268,7 @@ function parseLanguage(word){
 	if (word.match(/^[ㄱ-ㅣ]*$/)) return "ko-l"
 	if (word.match(/^[가-힣]*$/)) return "ko-c"
 	if (word.match(/^[0-9]*$/)) return "no-g"
-	if (word.match(/^[\-\_\・\ー]*$/)) return "sp-g"
+	if (word.match(/^[ \-\_\・\ー]*$/)) return "sp-g"
 	return null
 }
 Server.post("/cf", function(req, res){
