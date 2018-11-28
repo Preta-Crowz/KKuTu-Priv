@@ -163,21 +163,30 @@ block Middle
 			h4= L('gameMode')
 			select#room-mode
 				optgroup(label=L('mcKorean'))
-					option(value=3)= L('modeKSH')
-					option(value=2)= L('modeKKT')
-					option(value=8)= L('modeKAP')
-					option(value=6)= L('modeKTY')
-					option(value=10)= L('modeKDA')
-					option(value=5)= L('modeKCW')
-					option(value=12)= L('modeKSS')
-					option(value=4)= L('modeCSQ')
-					option(value=9)= L('modeHUN')
+					option(value=3)= L('modeKSH') // 한국어 끝말잇기
+					option(value=2)= L('modeKKT') // 한국어 쿵쿵따
+					option(value=8)= L('modeKAP') // 한국어 앞말잇기
+					option(value=6)= L('modeKTY') // 한국어 타자대결
+					option(value=10)= L('modeKDA') // 한국어 단어대결
+					option(value=5)= L('modeKCW') // 한국어 십자말풀이
+					option(value=12)= L('modeKSS') // 한국어 솎솎
+					option(value=4)= L('modeCSQ') // 한국어 자음퀴즈
+					option(value=9)= L('modeHUN') // 한국어 훈민정음
 				optgroup(label=L('mcEnglish'))
-					option(value=1)= L('modeESH')
-					option(value=0)= L('modeEKT')
-					option(value=7)= L('modeETY')
-					option(value=11)= L('modeEDA')
-					option(value=13)= L('modeESS')
+					option(value=1)= L('modeESH') // 영어 끝말잇기
+					option(value=0)= L('modeEKT') // 영어 끄투
+					option(value=18)= L('modeEAP') // 영어 앞말잇기
+					option(value=7)= L('modeETY') // 영어 타자대결
+					option(value=11)= L('modeEDA') // 영어 단어대결
+					option(value=15)= L('modeECW') // 영어 십자말풀이
+					option(value=13)= L('modeESS') // 영어 솎솎
+				optgroup(label=L('mcJapanese'))
+					option(value=14)= L('modeJSH') // 일본어 끝말잇기
+					option(value=19)= L('modeJAP') // 일본어 앞말잇기
+					option(value=17)= L('modeJTY') // 일본어 타자대결
+					option(value=20)= L('modeJDA') // 일본어 단어대결
+					option(value=16)= L('modeJCW') // 일본어 십자말풀이
+					option(value=21)= L('modeJSS') // 일본어 솎솎
 		div.dialog-bar(style='margin-top: -5px; height: 50px;')
 			h4
 			h4#game-mode-expl.dialog-bar-value(style='width: 100%; font-size: 11px;')

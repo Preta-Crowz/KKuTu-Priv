@@ -205,6 +205,75 @@ exports.RULE = {
 		ai: false,
 		big: true,
 		ewq: false
+	},
+	'JSH': { lang: "ja", // 일본어 끝말잇기
+		rule: "Classic",
+		opts: [ "man", "ext", "mis", "rms", "loa", "str",
+		"nrt", "lvl", "leg", "rtu", "uwd", "upl", "rtn" ],
+		time: 1,
+		ai: true,
+		big: false,
+		ewq: true
+	},
+	'ECW': { lang: "en", // 영어 십자말풀이
+		rule: "Crossword",
+		opts: [ "lvl" ],
+		time: 2,
+		ai: false,
+		big: true,
+		ewq: false
+	},
+	'JCW': { lang: "ja", // 일본어 십자말풀이
+		rule: "Crossword",
+		opts: [ "lvl" ],
+		time: 2,
+		ai: false,
+		big: true,
+		ewq: false
+	},
+	'JTY': { lang: "ja", // 일본어 타자대결
+		rule: "Typing",
+		opts: [ "prv", "lvl" ],
+		time: 1,
+		ai: false,
+		big: false,
+		ewq: false
+	},
+	'EAP': { lang: "en", // 영어 앞말잇기
+		rule: "Classic",
+		opts: [ "man", "ext", "mis", "rms", "loa", "str",
+		"nrt", "lvl", "leg", "rtu", "uwd", "upl", "rtn" ],
+		time: 1,
+		ai: true,
+		big: false,
+		_back: true,
+		ewq: true
+	},
+	'JAP': { lang: "ja", // 일본어 앞말잇기
+		rule: "Classic",
+		opts: [ "man", "ext", "mis", "rms", "loa", "str",
+		"nrt", "lvl", "leg", "rtu", "uwd", "upl", "rtn" ],
+		time: 1,
+		ai: true,
+		big: false,
+		_back: true,
+		ewq: true
+	},
+	'JDA': { lang: "ja", // 일본어 단어 대결
+		rule: "Daneo",
+		opts: [ "ijp", "mis", "rms", "lvl", "rtu", "upl" ],
+		time: 1,
+		ai: true,
+		big: false,
+		ewq: true
+	},
+	'JSS': { lang: "en", // 일본어 솎솎
+		rule: "Sock",
+		opts: [ "no2", "lvl" ],
+		time: 1,
+		ai: false,
+		big: true,
+		ewq: false
 	}
 };
 exports.getPreScore = function(text, chain, tr){
@@ -221,6 +290,9 @@ exports.EXAMPLE_TITLE = {
 exports.INIT_SOUNDS = [ "ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ" ];
 exports.MISSION_ko = [ "가", "나", "다", "라", "마", "바", "사", "아", "자", "차", "카", "타", "파", "하" ];
 exports.MISSION_en = [ "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" ];
+var missHira = ['あ', 'い', 'う', 'え', 'お', 'か', 'が', 'き', 'ぎ', 'く', 'ぐ', 'け', 'げ', 'こ', 'ご', 'さ', 'ざ', 'し', 'じ', 'す', 'ず', 'せ', 'ぜ', 'そ', 'ぞ', 'た', 'だ', 'ち', 'ぢ', 'つ', 'づ', 'て', 'で', 'と', 'ど', 'な', 'に', 'ぬ', 'ね', 'の', 'は', 'ば', 'ぱ', 'ひ', 'び', 'ぴ', 'ふ', 'ぶ', 'ぷ', 'へ', 'べ', 'ぺ', 'ほ', 'ぼ', 'ぽ', 'ま', 'み', 'む', 'め', 'も', 'ゃ', 'や', 'ゅ', 'ゆ', 'ょ', 'よ', 'ら', 'り', 'る', 'れ', 'ろ', 'わ', 'を', 'ん']
+var missKata = ['ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'ガ', 'キ', 'ギ', 'ク', 'グ', 'ケ', 'ゲ', 'コ', 'ゴ', 'サ', 'ザ', 'シ', 'ジ', 'ス', 'ズ', 'セ', 'ゼ', 'ソ', 'ゾ', 'タ', 'ダ', 'チ', 'ヂ', 'ツ', 'ヅ', 'テ', 'デ', 'ト', 'ド', 'ナ', 'ニ', 'ヌ', 'ネ', 'ノ', 'ハ', 'バ', 'パ', 'ヒ', 'ビ', 'ピ', 'フ', 'ブ', 'プ', 'ヘ', 'ベ', 'ペ', 'ホ', 'ボ', 'ポ', 'マ', 'ミ', 'ム', 'メ', 'モ', 'ャ', 'ヤ', 'ュ', 'ユ', 'ョ', 'ヨ', 'ラ', 'リ', 'ル', 'レ', 'ロ', 'ワ', 'ヲ', 'ン']
+exports.MISSION_ja = missHira + missKata + ['・','ー']
 
 exports.KO_INJEONG = [
 	"IMS"/*THE iDOLM@STER*/,
@@ -292,6 +364,9 @@ exports.EN_INJEONG = [
 	"BMS"/*BMS*/,
 	"TRR"/*테라리아*/
 ];
+exports.JA_INJEONG = [
+	"VOM"/*VOCALROID 오리지널 곡*/
+];
 exports.KO_THEME = [
 	"30"/*경제*/,
 	"40"/*고적*/,
@@ -329,14 +404,18 @@ exports.EN_THEME = [
 	"e20"/*식물*/,
 	"e43"/*날씨*/
 ];
+exports.JA_THEME = [
+];
 exports.IJP_EXCEPT = [
 	"OIJ"/*신조어*/
 ];
 exports.KO_IJP = exports.KO_INJEONG.concat(exports.KO_THEME).filter(function(item){ return !exports.IJP_EXCEPT.includes(item); });
 exports.EN_IJP = exports.EN_INJEONG.concat(exports.EN_THEME).filter(function(item){ return !exports.IJP_EXCEPT.includes(item); });
+exports.JA_IJP = exports.JA_INJEONG.concat(exports.JA_THEME).filter(function(item){ return !exports.IJP_EXCEPT.includes(item); });
 exports.REGION = {
 	'en': "en",
-	'ko': "kr"
+	'ko': "kr",
+	'ja': "jp"
 };
 exports.KOR_STRICT = /(^|,)(1|INJEONG)($|,)/;
 exports.KOR_GROUP = new RegExp("(,|^)(" + [
