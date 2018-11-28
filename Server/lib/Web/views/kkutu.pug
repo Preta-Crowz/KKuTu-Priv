@@ -234,6 +234,14 @@ block Middle
 						input(id=name, type='checkbox', style='width: auto;')
 						label(for=name)= LANG['theme_' + item]
 				- });
+			div.dialog-opt#ja-pick-list(style='width: 100%;')
+				- locals.JA_THEME.concat(locals.JA_INJEONG).forEach(function(item){
+					- var name = "ja-pick-" + item;
+					- if(locals.IJP_EXCEPT.indexOf(item) != -1) return;
+					div(style='float: left; width: 100%;')
+						input(id=name, type='checkbox', style='width: auto;')
+						label(for=name)= LANG['theme_' + item]
+				- });
 		div.dialog-bar.tail-button
 			button#injpick-ok= L('OK')
 	+Dialog('PracticeDiag', 300, 135)

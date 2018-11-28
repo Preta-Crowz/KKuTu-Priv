@@ -892,6 +892,9 @@ $(document).ready(function(){
 		}else if(rule.lang == "en"){
 			$data._ijkey = "#en-pick-";
 			$("#en-pick-list").show();
+		}else if(rule.lang == "ja"){
+			$data._ijkey = "#ja-pick-";
+			$("#ja-pick-list").show();
 		}
 		$stage.dialog.injPickNo.trigger('click');
 		for(i in $data._injpick){
