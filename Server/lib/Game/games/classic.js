@@ -58,6 +58,9 @@ exports.getTitle = function(){
 		case 'ESH':
 			eng = "^" + String.fromCharCode(97 + Math.floor(Math.random() * 26));
 			break;
+		case 'EAP':
+			eng = String.fromCharCode(97 + Math.floor(Math.random() * 26)) + "$";
+			break;
 		case 'KKT':
 			my.game.wordLength = 3;
 		case 'KSH':
@@ -101,7 +104,7 @@ exports.getTitle = function(){
 		var i, list = [];
 		var len;
 		
-		/* ºÎÇÏ°¡ ³Ê¹« °É¸°´Ù¸é ÁÖ¼®À» Ç®ÀÚ.
+		/* 부하가 너무 걸린다면 주석을 풀자.
 		R.go(true);
 		return R;
 		*/
@@ -316,7 +319,7 @@ exports.submit = function(client, text){
 		if(!text) return false;
 		if(text.length <= l) return false;
 		if(my.game.wordLength && text.length != my.game.wordLength) return false;
-		if(type == "KAP") return (text.slice(-1) == char) || (text.slice(-1) == subChar);
+		if(type == "KAP" || type == "EAP" || type == "JAP" ) return (text.slice(-1) == char) || (text.slice(-1) == subChar);
 		switch(l){
 			case 1: return (text[0] == char) || (text[0] == subChar);
 			case 2: return (text.substr(0, 2) == char);
@@ -325,7 +328,7 @@ exports.submit = function(client, text){
 		}
 	}
 	DB.kkutu[l].findOne([ '_id', text ],
-		(l == "ko") ? [ 'type', Const.KOR_GROUP ] : [ '_id', Const.ENG_ID ]
+		(l == "ko") ? [ 'type', Const.KOR_GROUP ] : (l == "en") ? [ '_id', Const.ENG_ID ] : [ '_id', Const.ENG_ID ] // 임시
 	).on(onDB);
 };
 exports.getScore = function(text, delay, ignoreMission){
@@ -350,7 +353,7 @@ exports.readyRobot = function(robot){
 	var ended = {};
 	var w, text, i;
 	var lmax;
-	var isRev = Const.GAME_TYPE[my.mode] == "KAP";
+	var isRev = (Const.GAME_TYPE[my.mode] == "KAP" || Const.GAME_TYPE[my.mode] == "EAP" || Const.GAME_TYPE[my.mode] == "JAP");
 	
 	getAuto.call(my, my.game.char, my.game.subChar, 2).then(function(list){
 		if(list.length){
@@ -379,7 +382,11 @@ exports.readyRobot = function(robot){
 		}else denied();
 	});
 	function denied(){
-		text = isRev ? `T.T ...${my.game.char}` : `${my.game.char}... T.T`;
+		if (Math.floor(Math.random()*25) != 0){
+			text = isRev ? `T.T ...${my.game.char}` : `${my.game.char}... T.T`;
+		} else {
+			text = isRev ? `TωT ...${my.game.char}` : `${my.game.char}... TωT`;
+		}
 		after();
 	}
 	function pickList(list){
@@ -424,16 +431,16 @@ exports.readyRobot = function(robot){
 	}
 };
 function getMission(l){
-	var arr = (l == "ko") ? Const.MISSION_ko : Const.MISSION_en;
+	var arr = (l == "ko") ? Const.MISSION_ko : (l == "en") ? Const.MISSION_en : Const.MISSION_ja;
 	
 	if(!arr) return "-";
 	return arr[Math.floor(Math.random() * arr.length)];
 }
 function getAuto(char, subc, type){
 	/* type
-		0 ¹«ÀÛÀ§ ´Ü¾î ÇÏ³ª
-		1 Á¸Àç ¿©ºÎ
-		2 ´Ü¾î ¸ñ·Ï
+		0 무작위 단어 하나
+		1 존재 여부
+		2 단어 목록
 	*/
 	var my = this;
 	var R = new Lizard.Tail();
@@ -460,11 +467,14 @@ function getAuto(char, subc, type){
 		case 'KAP':
 			adv = `.(${adc})$`;
 			break;
+		case 'EAP':
+			adv = `...(${adc})$`;
+			break;
 	}
 	if(!char){
 		console.log(`Undefined char detected! key=${key} type=${type} adc=${adc}`);
 	}
-	MAN.findOne([ '_id', char || "¡Ú" ]).on(function($mn){
+	MAN.findOne([ '_id', char || "★" ]).on(function($mn){
 		if($mn && bool){
 			if($mn[key] === null) produce();
 			else R.go($mn[key]);
@@ -482,8 +492,10 @@ function getAuto(char, subc, type){
 			if(my.opts.loanword) aqs.push([ 'flag', { '$nand': Const.KOR_FLAG.LOANWORD } ]);
 			if(my.opts.strict) aqs.push([ 'type', Const.KOR_STRICT ], [ 'flag', { $lte: 3 } ]);
 			else aqs.push([ 'type', Const.KOR_GROUP ]);
-		}else{
+		}else if(my.rule.lang == "en"){
 			aqs.push([ '_id', Const.ENG_ID ]);
+		}else{
+			aqs.push([ '_id', Const.ENG_ID ]); // 임시
 		}
 		switch(type){
 			case 0:
@@ -544,6 +556,8 @@ function getChar(text){
 		case 'ESH':
 		case 'KKT':
 		case 'KSH': return text.slice(-1);
+		case 'EAP':
+		case 'JAP':
 		case 'KAP': return text.charAt(0);
 	}
 };
@@ -564,12 +578,12 @@ function getSubChar(char){
 			ca = [ Math.floor(k/28/21), Math.floor(k/28)%21, k%28 ];
 			cb = [ ca[0] + 0x1100, ca[1] + 0x1161, ca[2] + 0x11A7 ];
 			cc = false;
-			if(cb[0] == 4357){ // ¤©¿¡¼­ ¤¤, ¤·
+			if(cb[0] == 4357){ // ㄹ에서 ㄴ, ㅇ
 				cc = true;
 				if(RIEUL_TO_NIEUN.includes(cb[1])) cb[0] = 4354;
 				else if(RIEUL_TO_IEUNG.includes(cb[1])) cb[0] = 4363;
 				else cc = false;
-			}else if(cb[0] == 4354){ // ¤¤¿¡¼­ ¤·
+			}else if(cb[0] == 4354){ // ㄴ에서 ㅇ
 				if(NIEUN_TO_IEUNG.indexOf(cb[1]) != -1){
 					cb[0] = 4363;
 					cc = true;
