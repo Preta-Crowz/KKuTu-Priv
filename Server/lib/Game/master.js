@@ -561,7 +561,6 @@ function processClientRequest($c, msg) {
 				}
 				if (msg.opts.level
 					||msg.opts.leng
-					||msg.opts.randomturn
 					||msg.opts.unknownplayer
 					) {
 					msg.code = 600;
