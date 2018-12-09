@@ -135,6 +135,14 @@ span{
 	width: 50px;
 	text-align: center;
 }
+div#profileIMG{
+	float: left;
+}
+div#profileIMG img{
+	float: left;
+	position: absolute;
+	right: 80px;
+}
 #account-info{
 	float: left;
 	padding-top: 8px;

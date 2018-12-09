@@ -71,6 +71,7 @@ mixin Menu()
 			button#quick-search-btn!= L('QUICK_BTN')
 		div#account
 			span#profile= SESSION.profile ? JSON.stringify(SESSION.profile) : '{}'
+			div#profileIMG= "Profile is loading.."
 			div#account-info
 
 mixin MMenu()

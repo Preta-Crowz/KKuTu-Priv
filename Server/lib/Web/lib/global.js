@@ -119,6 +119,7 @@ var L;
 	
 	// 계정
 		if($.cookie('lc') == "") $.cookie('lc', "ko_KR");
+		renderProfile("#profileIMG", global.profile.id)
 		
 		if(global.profile.token){
 			$("#account-info").html(global.profile.title || global.profile.name).on('click', function(e){
@@ -238,4 +239,42 @@ var L;
 	global.onPopup = function(url){
 		location.href = url;
 	};
+    function renderProfile(target, id){
+        $.get("/moremi?id=" + id, function(equip){
+            var MOREMI_PART = [ 'eye', 'mouth', 'shoes', 'clothes', 'head', 'lhand', 'rhand' ];
+            var $obj = $(target).empty();
+            var LR = { 'Mlhand': "Mhand", 'Mrhand': "Mhand" };
+            var i, key;
+            if(!equip) equip = {};
+            $.getJSON("/shop", function(shopData){
+                for(i in MOREMI_PART){
+                    var obj;
+                    var gif;
+                    var key = 'M' + MOREMI_PART[i];
+                    var part = LR[key] || key
+                    var spart
+                    for(j in shopData.goods){
+                        if (shopData.goods[j]._id == equip[key]) spart = shopData.goods[j]
+                    }
+                    if(typeof part == "string") part = { _id: "def", group: part, options: {} };
+                    obj = spart || part;
+                    gif = obj.options.hasOwnProperty('gif') ? ".gif" : ".png";
+                    img = (obj.group.charAt(0) == 'M')
+                        ? "/img/kkutu/moremi/" + obj.group.slice(1) + "/" + obj._id + gif
+                        : "/img/kkutu/shop/" + obj._id + ".png";
+                    Icss = { 'width': "25px", 'height': "25px", 'z-index': 100+parseInt(i) }
+                    if (key.slice(1) == "rhand") Icss.transform = "scaleX(-1)"
+                    $obj.append($("<img>")
+                    .addClass("moremies moremi-" + key.slice(1))
+                    .attr('src', img)
+                    .css(Icss)
+                    );
+                };
+            });
+            $obj.append($("<img>").addClass("moremies moremi-body")
+                .attr('src', "/img/kkutu/moremi/body.png")
+                .css({ 'width': "25px", 'height': "25px", 'z-index': 100 })
+            );
+        });
+    };
 })();
