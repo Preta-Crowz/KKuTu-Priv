@@ -78,6 +78,9 @@ mixin Menu()
 						div.menu-sub-btn(onclick='location.href = "'+MENU[i].sub[j].href+'";')!= L(MENU[i].sub[j].key)
 		div#account
 			span#profile= SESSION.profile ? JSON.stringify(SESSION.profile) : '{}'
+			span#dataPass
+			span#shopData
+			div#profileIMG= "Profile is loading.."
 			div#account-info
 
 mixin MMenu()
@@ -89,6 +92,7 @@ mixin MMenu()
 			div.menu-sub-btn(onclick='location.href = "https://jjo.kr/kkutu";', style='margin: 7px 0px; height: 25px;')!= L('SVL_S')
 		div#account
 			span#profile= SESSION.profile ? JSON.stringify(SESSION.profile) : '{}'
+			div#profileIMG= "Profile not Loading!"
 			div#account-info
 
 mixin Image(c, url)

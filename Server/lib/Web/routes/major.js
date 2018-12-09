@@ -64,6 +64,41 @@ Server.get("/box", function(req, res){
 		}
 	});
 });
+Server.get("/moremi", function(req, res){
+	var data;
+	var id = req.query.id;
+	if(id){
+		MainDB.users.findOne([ '_id', req.query.id ]).on(function($u){
+			if($u) {
+				data = $u.equip
+				return res.send(data);
+			}
+			else res.send({});
+		});
+	}
+
+	function onSession(list){
+		var board = {};
+		
+		Lizard.all(list.map(function(v){
+			if(board[v.profile.id]) return null;
+			else{
+				board[v.profile.id] = true;
+				return getProfile(v.profile.id);
+			}
+		})).then(function(data){
+			res.send({ list: data });
+		});
+	}
+	function getProfile(id){
+		var R = new Lizard.Tail();
+		
+		if(id) MainDB.users.findOne([ '_id', id ]).on(function($u){
+			R.go($u);
+		}); else R.go(null);
+		return R;
+	}
+});
 Server.get("/help", function(req, res){
 	page(req, res, "help", {
 		'KO_INJEONG': Const.KO_INJEONG
