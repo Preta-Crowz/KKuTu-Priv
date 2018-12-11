@@ -37,10 +37,10 @@ html
 			meta(name='keywords', content=LANG['meta_keys'] || L('META_KEYS'))
 
 		block OpenGraph
-			meta(property='og:image', content=Const.OG_IMAGE || locals.ogImage || "http://JJo.kr/img/ogImage.png")
-			meta(property='og:url', content=Const.OG_URL || locals.ogURL || "http://JJo.kr/")
-			meta(property='og:title', content=Const.OG_TITLE || locals.ogTitle || "쪼롤 - League of Legends 정보 검색 사이트")
-			meta(property='og:description', content=Const.OG_DESC || locals.ogDescription || "롤 전적검색은 JJO.KR")
+			meta(property='og:image', content=locals.ogImage || "https://냉이.한국/favicon.png")
+			meta(property='og:url', content=locals.ogURL || "https://냉이.한국")
+			meta(property='og:title', content=locals.ogTitle || "냉이 끄투")
+			meta(property='og:description', content=locals.ogDescription || "끄투 온라인 프리서버 프로젝트 : 냉이 끄투")
 
 		+PageHead()
 			block Preload
