@@ -99,6 +99,37 @@ Server.get("/moremi", function(req, res){
 		return R;
 	}
 });
+Server.get("/search", function(req, res){
+	if(!req.query.lang) res.sendStatus(400);
+	if(!req.query.theme) res.sendStatus(400);
+	var TABLE = MainDB.kkutu[req.query.lang];
+	
+	if(!TABLE) res.sendStatus(400);
+	if(!TABLE.find) res.sendStatus(400);
+	TABLE.find([ 'theme', new RegExp(req.query.theme) ]).limit([ '_id', true ]).on(function($docs){
+		res.send( $docs.map(v => v._id) );
+	});
+});
+Server.get("/starts/:word", function(req, res){
+	if(!req.query.lang) res.sendStatus(400);
+	var TABLE = MainDB.kkutu[req.query.lang];
+	
+	if(!TABLE) res.sendStatus(400);
+	if(!TABLE.findOne) res.sendStatus(400);
+	TABLE.find([ '_id', new RegExp("^"+req.params.word) ]).on(function($docs){
+		res.send( $docs.map(v => v._id) );
+	});
+});
+Server.get("/ends/:word", function(req, res){
+	if(!req.query.lang) res.sendStatus(400);
+	var TABLE = MainDB.kkutu[req.query.lang];
+	
+	if(!TABLE) res.sendStatus(400);
+	if(!TABLE.findOne) res.sendStatus(400);
+	TABLE.find([ '_id', new RegExp(req.params.word+"$") ]).on(function($docs){
+		res.send( $docs.map(v => v._id) );
+	});
+});
 Server.get("/help", function(req, res){
 	page(req, res, "help", {
 		'KO_INJEONG': Const.KO_INJEONG
