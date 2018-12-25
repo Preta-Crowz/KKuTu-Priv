@@ -9,3 +9,4 @@ Server/lib/sub/global.json
 .vscode
 Server/sec
 Server/lib/Web/public/kkutu-*.html
+KKUTU_ERROR.log
