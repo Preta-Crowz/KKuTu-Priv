@@ -116,7 +116,8 @@ mixin PageHead(min)
 	if block
 		block
 	link(rel='stylesheet', href='/css/in_'+locals.page.replace("/", "_")+'.css')
-	script(type='text/javascript', src='/js/in_'+locals.page.replace("/", "_")+'.min.js')
+	if locals.page.replace("/", "_") != "kkutu"
+		script(type='text/javascript', src='/js/in_'+locals.page.replace("/", "_")+'.min.js')
 	
 mixin SearchBox(arg1, arg2)
 	meta(name='description', content=L('meta_desc', arg1, arg2))
