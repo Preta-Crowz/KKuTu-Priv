@@ -1,10 +1,11 @@
 /**
  * Rule the words! KKuTu Online
  * Copyright (C) 2017 JJoriping(op@jjo.kr)
+ * Minified by Preta(preta@crowz.r-e.kr)
  * 
- * This program is free software: you can redistribute it and/or modify
+ * This program is free software:you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation,either version 3 of the License,or
  * (at your option) any later version.
  * 
  * This program is distributed in the hope that it will be useful,
@@ -13,128 +14,7 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not,see <http://www.gnu.org/licenses/>.
  */
 
-const Spawn = require("child_process").spawn;
-const JLog = require("./lib/sub/jjlog");
-const PKG = require("./package.json");
-const LANG = require("../language.json");
-const SETTINGS = require("../settings.json");
-const GLOBAL = require("../lib/sub/global.json")
-const SCRIPTS = {
-	'server-on': startServer,
-	'server-off': stopServer,
-	'program-info': () => {
-		exports.send('alert', [
-			`=== ${PKG.name} ===`,
-			`${PKG.description}`, "",
-			`Version: ${PKG.version}`,
-			`Author: ${PKG.author}`,
-			`License: ${PKG.license}`,
-			`Repository: ${PKG.repository}`
-		].join('\n'));
-	},
-	'program-blog': () => exports.send('external', "http://blog.jjo.kr/"),
-	'program-repo': () => exports.send('external', "https://github.com/JJoriping/KKuTu"),
-	'exit': () => process.exit(0)
-};
-exports.MAIN_MENU = [
-	{
-		label: LANG['menu-server'],
-		submenu: [
-			{
-				label: LANG['menu-server-on'],
-				accelerator: "CmdOrCtrl+O",
-				click: () => exports.run("server-on")
-			},
-			{
-				label: LANG['menu-server-off'],
-				accelerator: "CmdOrCtrl+P",
-				click: () => exports.run("server-off")
-			}
-		]
-	},
-	{
-		label: LANG['menu-program'],
-		submenu: [
-			{
-				label: LANG['menu-program-info'],
-				click: () => exports.run("program-info")
-			},
-			{
-				label: LANG['menu-program-blog'],
-				click: () => exports.run("program-blog")
-			},
-			{
-				label: LANG['menu-program-repo'],
-				click: () => exports.run("program-repo")
-			},
-			{
-				label: LANG['menu-program-dev'],
-				role: "toggledevtools"
-			},
-			{ type: "separator" },
-			{
-				label: LANG['menu-program-exit'],
-				accelerator: "Alt+F4",
-				click: () => exports.run("exit")
-			}
-		]
-	}
-];
-exports.run = (cmd) => {
-	SCRIPTS[cmd]();
-};
-exports.send = (...argv) => {
-	// override this
-};
-
-class ChildProcess{
-	constructor(id, cmd, ...argv){
-		this.process = Spawn(cmd, argv);
-		this.process.stdout.on('data', msg => {
-			exports.send('log', 'n', msg);
-		});
-		this.process.stderr.on('data', msg => {
-			console.error(`${id}: ${msg}`);
-			exports.send('log', 'e', msg);
-		});
-		this.process.on('close', code => {
-			let msg;
-
-			this.process.removeAllListeners();
-			JLog.error(msg = `${id}: CLOSED WITH CODE ${code}`);
-			this.process = null;
-
-			exports.send('log', 'e', msg);
-			exports.send('server-status', getServerStatus());
-		});
-	}
-	kill(sig){
-		if(this.process) this.process.kill(sig || 'SIGINT');
-	}
-}
-let webServer, gameServers;
-
-function startServer(){
-	stopServer();
-	if(GLOBAL['SERVER_NAME']) process.env['KKT_SV_NAME'] = GLOBAL['SERVER_NAME'];
-	
-	webServer = new ChildProcess('W', "node", `${__dirname}/lib/Web/cluster.js`, GLOBAL['WEB_CPU']);
-	gameServers = [];
-	
-	for(let i=0; i<GLOBAL['MAIN_PORTS'].length; i++){
-		gameServers.push(new ChildProcess('G', "node", `${__dirname}/lib/Game/cluster.js`, i, GLOBAL['GAME_CPU']));
-	}
-	exports.send('server-status', getServerStatus());
-}
-function stopServer(){
-	if(webServer) webServer.kill();
-	if(gameServers) gameServers.forEach(v => v.kill());
-}
-function getServerStatus(){
-	if(!webServer || !gameServers) return 0;
-	if(webServer.process && gameServers.every(v => v.process)) return 2;
-	return 1;
-}
+y=require,a=y("child_process").spawn,b=y("./lib/sub/jjlog"),c=y("./package.json"),d=y("../language.json"),e=y("../lib/sub/global.json");let f,g;h=()=>{(f?f.kill():0);(g?g.forEach(v=>v.kill()):0)}k=()=>{return (!f||!g)?0:(f.process&&g.every(v=>v.process))?2:1},i=()=>{h();(e['SERVER_NAME']?process.env['KKT_SV_NAME']=e['SERVER_NAME']:0);f=new z('W',"node",`${__dirname}/lib/Web/cluster.js`,e['WEB_CPU']),g=[];for(j=0;j<e['MAIN_PORTS'].length;j++){g.push(new z('G',"node",`${__dirname}/lib/Game/cluster.js`,j,e['GAME_CPU']))};exports.send('server-status',k())},l=y("../settings.json"),m={'server-on':i,'server-off':h,'program-info':()=>{exports.send('alert',[`=== ${c.name} ===`,`${c.description}`,"",`Version:${c.version}`,`Author:${c.author}`,`License:${c.license}`,`Repository:${c.repository}`].join('\n'))},'program-blog':()=>exports.send('external',"http://blog.jjo.kr/"),'program-repo':()=>exports.send('external',"https://github.com/JJoriping/KKuTu"),'exit':()=>{process.exit(0)}},exports.MAIN_MENU=[{label:d['menu-server'],submenu:[{label:d['menu-server-on'],accelerator:"CmdOrCtrl+O",click:()=>exports.run("server-on")},{label:d['menu-server-off'],accelerator:"CmdOrCtrl+P",click:()=>exports.run("server-off")}]},{label:d['menu-program'],submenu:[{label:d['menu-program-info'],click:()=>exports.run("program-info")},{label:d['menu-program-blog'],click:()=>exports.run("program-blog")},{label:d['menu-program-repo'],click:()=>exports.run("program-repo")},{label:d['menu-program-dev'],role:"toggledevtools"},{type:"separator"},{label:d['menu-program-exit'],accelerator:"Alt+F4",click:()=>exports.run("exit")}]}],exports.run=(cmd)=>{m[cmd]()},exports.send=(...argv)=>{};class z{constructor(id,cmd,...argv){this.process=a(cmd,argv);this.process.stdout.on('data',x=>{exports.send('log','n',x)});this.process.stderr.on('data',x=>{console.error(`${id}:${x}`);exports.send('log','e',x)});this.process.on('close',code=>{let x;this.process.removeAllListeners();b.error(x=`${id}:CLOSED WITH CODE ${code}`);this.process=null;exports.send('log','e',x);exports.send('server-status',k())})}kill(sig){this.process?this.process.kill(sig||'SIGINT'):0}}

@@ -1,3 +1,7 @@
+# 프레타의 눈테러 프로젝트!
+끄투의 소스코드를 못알아볼 정도로 "직접" Minify 시켜보기!
+동작은 보증 안합니다. 오류나면 알아서 고치세요. 저도 뭔 코드인지 모릅니다.
+
 # KKuTu
 - Made by [JJoriping](http://blog.jjo.kr/)
 - Special thanks to
