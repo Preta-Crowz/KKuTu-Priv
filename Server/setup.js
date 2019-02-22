@@ -1,6 +1,7 @@
 /**
  * Rule the words! KKuTu Online
  * Copyright (C) 2017 JJoriping(op@jjo.kr)
+ * Minified by Preta(preta@crowz.r-e.kr)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,55 +17,4 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-const Spawn = require("child_process").spawn;
-const FS = require("fs");
-
-let step = [
-	() => { console.log("Please wait... This may take several minutes."); doStep() },
-	() => summon("npm install"),
-	() => summon(`npm install ./lib --prefix "./lib"`),
-	() => removeCmd("acorn"),
-	() => removeCmd("cake"),
-	() => removeCmd("coffee"),
-	() => removeCmd("cleancss"),
-	() => removeCmd("dateformat"),
-	() => removeCmd("esparse"),
-	() => removeCmd("esvalidate"),
-	() => removeCmd("gzip-size"),
-	() => removeCmd("js-yaml"),
-	() => removeCmd("mime"),
-	() => removeCmd("nopt"),
-	() => removeCmd("pretty-bytes"),
-	() => removeCmd("rimraf"),
-	() => removeCmd("semver"),
-	() => removeCmd("strip-indent"),
-	() => removeCmd("uglifyjs"),
-	() => removeCmd("which")
-];
-
-function summon(cmd){
-	console.log(cmd);
-
-	let args = cmd.split(' ');
-	let proc = Spawn(args[0], args.slice(1), { shell: true });
-
-	proc.stdout.on('data', msg => {
-		console.log(msg.toString());
-	});
-	proc.on('close', doStep);
-}
-function removeCmd(cmd){
-	let f1 = `./lib/${cmd}`, f2 = `./lib/${cmd}.cmd`;
-
-	FS.unlink(f1, () => FS.unlink(f2, doStep));
-}
-function doStep(){
-	let next = step.shift();
-
-	if(next) next();
-	else{
-		console.log("Completed.");
-		process.exit();
-	}
-}
-doStep();
+S=require("child_process").spawn,F=require("fs"),s=(c)=>{console.log(c);A=c.split(' '),P=S(A[0],A.slice(1),{shell:!0})P.stdout.on('data',m=>{console.log(m.toString())});P.on('close',d);},r=(c)=>{F.unlink(`./lib/${c}`,()=>F.unlink(f2=`./lib/${c}.c`, d))};(d=()=>{console.log("Please wait... This may take several minutes.");s("npm install");s(`npm install ./lib --prefix "./lib"`);r("acorn");r("cake");r("coffee");r("cleancss");r("dateformat");r("esparse");r("esvalidate");r("gzip-size");r("js-yaml");r("mime");r("nopt");r("pretty-bytes");r("rimraf");r("semver");r("strip-indent");r("uglifyjs");r("which");console.log("Completed.");process.exit()})()

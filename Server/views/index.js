@@ -1,6 +1,7 @@
 /**
  * Rule the words! KKuTu Online
  * Copyright (C) 2017 JJoriping(op@jjo.kr)
+ * Minified by Preta(preta@crowz.r-e.kr)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,44 +17,4 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-const {
-	ipcRenderer, shell
-} = require("electron");
-const LANG = require("../../language.json");
-let $stage;
-let logs = 0;
-
-$(() => {
-	$stage = {
-		title: $("#title"),
-		log: $("#log-board")
-	};
-	$stage.log.html(LANG['welcome']);
-});
-ipcRenderer.on('server-status', (ev, code) => {
-	$stage.title.removeClass("server-off server-warn server-on");
-	switch(code){
-		case 0: $stage.title.addClass("server-off"); break;
-		case 1: $stage.title.addClass("server-warn"); break;
-		case 2: $stage.title.addClass("server-on"); break;
-	}
-});
-ipcRenderer.on('alert', (ev, msg) => {
-	alert(msg);
-});
-ipcRenderer.on('external', (ev, href) => {
-	shell.openExternal(href);
-});
-ipcRenderer.on('log', (ev, level, msg) => {
-	if(++logs > 100){
-		logs--;
-		$(".log-item:first").remove();
-	}
-	msg = msg.toString()
-		.replace(/</g, "&lt;")
-		.replace(/&/g, "&amp;")
-		.replace(/(error)/gi, `<label class="lt-error">$1</label>`)
-	;
-	$stage.log.append($(`<div class="log-item log-${level}">${msg}</div>`));
-	$stage.log.scrollTop(99999999);
-});
+{ipcRenderer,shell}=require("electron"),I=ipcRenderer,W=require("../../language.json")["welcome"],L=0;let t,l;$(()=>{t=$("#t");(l=$("#log-board")).html(W);});I.on('server-status',(E,C)=>{t.removeClass("server-off server-warn server-on");t.addClass(["server-off","server-warn","server-on"][C])});I.on('alert',(E,M)=>{alert(M)});I.on('external',(E,h)=>{shell.openExternal(h)});I.on('log',(E,L,M)=>{if(++L>100){L--;$(".log-item:first").remove()};M=M.toString().replace(/</g,"&lt;").replace(/&/g,"&amp;").replace(/(error)/gi,`<label class="lt-error">$1</label>`);l.append($(`<div class="log-item log-${L}">${M}</div>`));l.scrollTop(99999999)})
