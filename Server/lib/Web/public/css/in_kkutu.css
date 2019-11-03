@@ -741,10 +741,12 @@ iframe{
 		transition: all 300ms ease;
 	}
 	.goods-box{
-		margin-top: 5px;
-		height: 125px;
+		height: 160px;
 		overflow-y: scroll;
 	}
+    #dress-goods{
+        margin-top: -20px;
+    }
 		.dress-type{
 			float: left;
 			padding: 1px 0px;
@@ -778,7 +780,7 @@ iframe{
 		#cf-tray div{ width: 30px; height: 30px; cursor: pointer; }
 		.cf-tray-selected{ padding: 0px; border: 2px solid #61B8FF; }
 	#cf-dict{ margin: 2px 0px; height: 166px; color: #BBBBBB; overflow-y: scroll; background-color: #111111; }
-	#cf-reward{ float: left; width: 100%; height: 148px; overflow-y: scroll; }
+	#cf-reward{ float: left; width: 100%; height: 430px; overflow-y: scroll; }
 		.cf-rew-item{ float: left; border-bottom: 1px dashed #DDDDDD; margin-bottom: 1px; }
 		.cf-rew-item div{ float: left; }
 			.cf-rew-image{ width: 30px; height: 30px; }

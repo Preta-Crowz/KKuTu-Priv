@@ -670,7 +670,7 @@
 		"myMoremi": "내 모레미",
 		"category_all": "전체",
 		"category_spec": "특수",
-		"category_skin": "스킨",
+		"category_skin": "칭호",
 		"category_badge": "휘장",
 		"category_head": "머리",
 		"category_eye": "눈",
@@ -678,7 +678,11 @@
 		"category_clothes": "옷",
 		"category_hs": "손발",
 		"category_back": "배경",
+
 		"category_buff": "버프",
+		"category_pcs": "조각",
+		"category_cns": "소모",
+
 		"equipped": "<font style='color: #FFB861;'> (착용 중)</font>",
 		"sureEquip": "다음 항목을 착용합니다",
 		"sureUnequip": "다음 항목을 착용 해제합니다",

@@ -378,7 +378,7 @@ block Middle
 			div.moremi#dress-view(style='float: left; width: 150px; height: 150px;')
 			h4(style='width: 100%; font-weight: bold;')= L('myMoremi')
 		div.dialog-bar(style='padding: 5px; width: 440px;')
-			div(style='border-bottom: 1px solid #CCCCCC; height: 20px;')
+			div(style='border-bottom: 1px solid #CCCCCC; height: 20px; width: 90px;')
 				- for(var i in locals.CATEGORIES)
 					- var v = locals.GROUPS[locals.CATEGORIES[i]] || [];
 					div.category-filter.dress-type(id="dress-type-" + locals.CATEGORIES[i], value=v.join(','))= L('category_' + locals.CATEGORIES[i])
@@ -387,10 +387,10 @@ block Middle
 			button#dress-ok= L('OK')
 			button#dress-cf= L('charFactory')
 			button(onclick=`alert("${L("paybackHelp")}");`)= L('payback')
-	+Dialog('CharFactoryDiag', 500, 410, L('charFactory'))
+	+Dialog('CharFactoryDiag', 500, overflow, L('charFactory'))
 		div.dialog-bar(style='width: 300px;')
-			div#cf-tray
-			div#cf-dict
+			div#cf-tray(style='height: 300px;')
+			div#cf-dict(style='height: 180px;')
 		div.dialog-bar(style='width: 200px;')
 			h4(style='border-bottom: 1px solid #CCCCCC; width: 100%; height: 24px;')= L('cfReward')
 			div#cf-reward
