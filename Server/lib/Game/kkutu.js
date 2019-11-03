@@ -715,7 +715,8 @@ exports.Client = function(socket, profile, sid){
 		var $obj;
 		var i, j;
 		var pm = rw.playTime / 60000;
-		
+		var gEXP, hEXP, gMNY, hMNY;
+
 		rw._score = Math.round(rw.score);
 		rw._money = Math.round(rw.money);
 		rw._blog = [];
@@ -725,14 +726,16 @@ exports.Client = function(socket, profile, sid){
 			if(!$obj) continue;
 			if(!$obj.options) continue;
 			for(j in $obj.options){
-				if(j == "gEXP") rw.score += rw._score * $obj.options[j];
-				else if(j == "hEXP") rw.score += $obj.options[j] * pm;
-				else if(j == "gMNY") rw.money += rw._money * $obj.options[j];
-				else if(j == "hMNY") rw.money += $obj.options[j] * pm;
+				if(j == "gEXP") gEXP *= 1+$obj.options[j];
+				else if(j == "hEXP") hEXP *= 1+$obj.options[j];
+				else if(j == "gMNY") gMNY *= 1+$obj.options[j];
+				else if(j == "hMNY") hMNY *= 1+$obj.options[j];
 				else continue;
 				rw._blog.push("q" + j + $obj.options[j]);
 			}
 		}
+        rw.score *= gEXP + hEXP*pm
+        rw.money *= gMNY + hMNY*pm
 		if(rw.together && my.okgCount > 0){
 			i = 0.05 * my.okgCount;
 			j = 0.05 * my.okgCount;
