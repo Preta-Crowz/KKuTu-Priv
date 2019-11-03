@@ -51,6 +51,22 @@ Server.post("/consume/:id", function(req, res){
 });
 
 };
+
+var EXP = [];
+function getRequiredScore(lv){
+    return Math.round(
+        (!(lv%5)*0.3 + 1) * (!(lv%15)*0.4 + 1) * (!(lv%45)*0.5 + 1) * (
+            120 + Math.floor(lv/5)*60 + Math.floor(lv*lv/225)*120 + Math.floor(lv*lv/2025)*180
+        )
+    )
+}
+EXP.push(getRequiredScore(1))
+for(i=2; i<20000000; i++){
+    EXP.push(EXP[i-2] + getRequiredScore(i));
+}
+EXP[20000000 - 1] = Infinity;
+EXP.push(Infinity);
+
 function useItem($user, $item, gid){
 	var R = { gain: [] };
 	
@@ -69,7 +85,13 @@ function useItem($user, $item, gid){
 			got(pick([ 'b4_bb', 'b4_hongsi', 'b4_mint' ]), 1, 604800);
 			break;
 		case 'dictPage':
-			R.exp = Math.round(Math.sqrt(1 + 2 * ($user.kkutu.score || 0)));
+            var lvl = ((score)=>{
+                var i, l = EXP.length;
+                
+                for(i=0; i<l; i++) if(score < EXP[i]) break;
+                return i+1;
+            })($user.kkutu.score)
+			R.exp = Math.round(Math.sqrt(1 + 2 * Math.pow(lvl,4)));
 			$user.kkutu.score += R.exp;
 			break;
         case 'dictCpn100':
