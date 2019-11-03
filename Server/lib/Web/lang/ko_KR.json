@@ -20,6 +20,7 @@
 		
 		"TSV":	"제휴 서버",
 		"TSV_STKT":	"STKTonline",
+		"TSV_OURK": "아워끄투",
 
 		"EGG":	"　",
 		"20G":	"이백억",
@@ -122,10 +123,17 @@
 		
 		"GROUP_PIX": "글자 조각",
 		"GROUP_CNS": "소모품",
-
-		"GROUP_BUFF": "버프",
 		
-		"GROUP_NIK": "이름 스킨",
+		"GROUP_Bexp": "경험치 버프",
+		"GROUP_Bping": "핑 버프",
+		"GROUP_Ball": "공통 버프",
+		"GROUP_Bspc": "특수 버프",
+
+		"GROUP_Pnc": "이름 색상",
+		"GROUP_Ppc": "칭호 색상",
+		"GROUP_Ppf": "접두 칭호",
+		"GROUP_Psf": "접미 칭호",
+
 		"GROUP_BDG1": "보물 휘장",
 		"GROUP_BDG2": "희귀 휘장",
 		"GROUP_BDG3": "고급 휘장",

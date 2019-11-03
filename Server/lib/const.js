@@ -53,16 +53,15 @@ exports.OPTIONS = {
 	'upl': { name: "UnknownPlayer" },
 	'rtn': { name: "Returns" }
 };
-exports.MOREMI_PART = [ 'back', 'eye', 'mouth', 'shoes', 'clothes', 'head', 'lhand', 'rhand', 'front', 'buff' ];
-exports.CATEGORIES = [ "all", "spec", "skin", "badge", "head", "eye", "mouth", "clothes", "hs", "back" ];
+exports.MOREMI_PART = [ 'back', 'eye', 'mouth', 'shoes', 'clothes', 'head', 'lhand', 'rhand', 'front'];
+exports.CATEGORIES = [ "all", "skin", "badge", "head", "eye", "mouth", "clothes", "hs", "back", "buff", "pcs", "cns" ];
 exports.AVAIL_EQUIP = [
-	"NIK", "BDG0", "BDG1", "BDG2", "BDG3", "BDG4",
+	"Pnc", "Ppc", "Ppf", "Psf", "BDG0", "BDG1", "BDG2", "BDG3", "BDG4",
 	"Mhead", "Meye", "Mmouth", "Mhand", "Mclothes", "Mshoes", "Mback",
-	"buff"
+	"Bexp", "Bping", "Ball", "Bspc"
 ];
 exports.GROUPS = {
-	'spec': [ "PIX", "PIY", "PIZ", "CNS", "buff" ],
-	'skin': [ "NIK" ],
+	'skin': [ "Pnc", "Ppc", "Ppf", "Psf" ],
 	'badge': [ "BDG0", "BDG1", "BDG2", "BDG3", "BDG4" ],
 	'head': [ "Mhead" ],
 	'eye': [ "Meye" ],
@@ -70,6 +69,9 @@ exports.GROUPS = {
 	'clothes': [ "Mclothes" ],
 	'hs': [ "Mhand", "Mshoes" ],
 	'back': [ "Mback", "Mfront" ],
+    'buff': [ "Bexp", "Bping", "Ball", "Bspc" ],
+    'pcs': [ "PIX", "PIY", "PIZ" ],
+    'cns': [ "CNS" ]
 };
 exports.CUSTOM_OG = GLOBAL.CUSTOM_OG
 exports.OG_IMAGE = exports.CUSTOM_OG ? GLOBAL.OG_IMAGE : "http://kkutu.kr/img/kkutu/logo.png",

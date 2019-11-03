@@ -199,7 +199,16 @@ Cluster.on('message', function(worker, msg){
 			if(DIC[msg.id]) DIC[msg.id].onOKG(msg.time);
 			break;
 		case "kick":
-			if(DIC[msg.target]) DIC[msg.target].socket.close();
+			if(DIC[msg.target]){
+				if(DIC[msg.target].admin) {
+					DIC[id].send('info', { "value": "관리자는 추방 할 수 없습니다." });
+				} else {
+					DIC[msg.target].socket.close();
+					DIC[id].send('info', { "value": "유저를 추방하였습니다." });
+				}
+			} else {
+				DIC[id].send('info', { "value": "사용자를 찾을 수 없습니다." });
+			}
 			break;
 		case "invite":
 			if(!DIC[msg.target]){
