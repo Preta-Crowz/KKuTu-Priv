@@ -80,7 +80,7 @@ exports.getTitle = function(){
 		DB.kkutu[l.lang].find(
 			[ '_id', new RegExp(eng + ".{" + Math.max(1, my.round - 1) + "}$") ],
 			// [ 'hit', { '$lte': h } ],
-			(l.lang == "ko") ? [ 'type', Const.KOR_GROUP ] : [ '_id', Const.ENG_ID ]
+            (l.lang=="ko") ? [ 'type', Const.KOR_GROUP ] : (l.lang=="ja") ? [ 'type', Const.JAP_GROUP ] : [ '_id', Const.ENG_ID ]
 			// '$where', eng+"this._id.length == " + Math.max(2, my.round) + " && this.hit <= " + h
 		).limit(20).on(function($md){
 			var list;
@@ -564,7 +564,7 @@ function getChar(text){
 function getSubChar(char){
 	var my = this;
 	var r;
-	var c = char.charCodeAt();
+	var c = char ? char.charCodeAt() : "0";
 	var k;
 	var ca, cb, cc;
 	

@@ -30,6 +30,11 @@ const LANG_STATS = { 'ko': {
 	reg: /^[a-z]{4,10}$/,
 	len: 100,
 	min: 10
+}, 'ja': {
+    reg: /^[ぁ-ゔ]{2,5}$/,
+    add: [ 'type', Const.JAP_GROUP ],
+    len: 100,
+    min: 5
 }};
 
 exports.init = function(_DB, _DIC){
@@ -56,7 +61,7 @@ exports.roundReady = function(){
 	my.game.round++;
 	my.game.roundTime = my.time * 1000;
 	if(my.game.round <= my.round){
-		DB.kkutu[my.rule.lang].find([ '_id', conf.reg ], [ 'hit', { $gte: 1 } ], conf.add).limit(1234).on(function($docs){
+		DB.kkutu[my.rule.lang].find([ '_id', conf.reg ], [ 'hit', { $gte: 0 } ], conf.add).limit(1234).on(function($docs){
 			$docs.sort(function(a, b){ return Math.random() < 0.5; });
 			while(w = $docs.shift()){
 				words.push(w._id);

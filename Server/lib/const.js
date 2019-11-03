@@ -269,7 +269,7 @@ exports.RULE = {
 		big: false,
 		ewq: true
 	},
-	'JSS': { lang: "en", // 일본어 솎솎
+	'JSS': { lang: "ja", // 일본어 솎솎
 		rule: "Sock",
 		opts: [ "no2", "lvl" ],
 		time: 1,
@@ -287,7 +287,8 @@ exports.getPenalty = function(chain, score){
 exports.GAME_TYPE = Object.keys(exports.RULE);
 exports.EXAMPLE_TITLE = {
 	'ko': "가나다라마바사아자차카타파하거너더러머버",
-	'en': "abcdefghijklmnopqrst"
+	'en': "abcdefghijklmnopqrst",
+    'ja': "あいうえおかきくけこさしすせそたちつてと"
 };
 exports.INIT_SOUNDS = [ "ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ" ];
 exports.MISSION_ko = [ "가", "나", "다", "라", "마", "바", "사", "아", "자", "차", "카", "타", "파", "하" ];
@@ -424,6 +425,11 @@ exports.KOR_GROUP = new RegExp("(,|^)(" + [
 	"INJEONG"
 ].join('|') + ")(,|$)");
 exports.ENG_ID = /^['a','b','c',d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','0','1','2','3','4','5','6','7','8','9',' ', '.', "'", '"', '!']+$/i;
+exports.JAP_GROUP = new RegExp("(,|^)(" + [
+    "0", "1", "3", "7", "8", "11", "9",
+    "16", "15", "17", "2", "18", "20", "26", "19",
+    "INJEONG"
+].join('|') + ")(,|$)");
 exports.KOR_FLAG = {
 	LOANWORD: 1, // 외래어
 	INJEONG: 2,	// 어인정
