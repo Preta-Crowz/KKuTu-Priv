@@ -91,7 +91,7 @@ function useItem($user, $item, gid){
                 for(i=0; i<l; i++) if(score < EXP[i]) break;
                 return i+1;
             })($user.kkutu.score)
-			R.exp = Math.round(Math.sqrt(1 + 2 * Math.pow(lvl,4)));
+			R.exp = Math.round(Math.sqrt(1 + 2 * Math.pow(lvl,4))/30);
 			$user.kkutu.score += R.exp;
 			break;
         case 'dictCpn100':
