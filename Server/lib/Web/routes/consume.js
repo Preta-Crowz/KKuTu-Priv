@@ -16,38 +16,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var MainDB	 = require("../db");
-var JLog	 = require("../../sub/jjlog");
+var MainDB     = require("../db");
+var JLog     = require("../../sub/jjlog");
 var Const = require('../../const');
 
 exports.run = function(Server, page){
 
 Server.post("/consume/:id", function(req, res){
-	if(!req.session.profile) return res.json({ error: 400 });
-	var uid = req.session.profile.id;
-	var gid = req.params.id;
-	var isDyn = gid.charAt() == '$';
-	
-	MainDB.users.findOne([ '_id', uid ]).on(function($user){
-		if(!$user) return res.json({ error: 400 });
-		if(!$user.box) return res.json({ error: 400 });
-		if(!$user.lastLogin) $user.lastLogin = new Date().getTime();
-		var q = $user.box[gid];
-		var output;
-		
-		if(!q) return res.json({ error: 430 });
-		MainDB.kkutu_shop.findOne([ '_id', isDyn ? gid.slice(0, 4) : gid ]).limit([ 'cost', true ]).on(function($item){
-			if(!$item) return res.json({ error: 430 });
-			consume($user, gid, 1);
-			output = useItem($user, $item, gid);
-			MainDB.users.update([ '_id', uid ]).set($user).on(function($res){
-				output.result = 200;
-				output.box = $user.box;
-				output.data = $user.kkutu;
-				res.send(output);
-			});
-		});
-	});
+    if(!req.session.profile) return res.json({ error: 400 });
+    var uid = req.session.profile.id;
+    var gid = req.params.id;
+    var isDyn = gid.charAt() == '$';
+    
+    MainDB.users.findOne([ '_id', uid ]).on(function($user){
+        if(!$user) return res.json({ error: 400 });
+        if(!$user.box) return res.json({ error: 400 });
+        if(!$user.lastLogin) $user.lastLogin = new Date().getTime();
+        var q = $user.box[gid];
+        var output;
+        
+        if(!q) return res.json({ error: 430 });
+        MainDB.kkutu_shop.findOne([ '_id', isDyn ? gid.slice(0, 4) : gid ]).limit([ 'cost', true ]).on(function($item){
+            if(!$item) return res.json({ error: 430 });
+            consume($user, gid, 1);
+            output = useItem($user, $item, gid);
+            MainDB.users.update([ '_id', uid ]).set($user).on(function($res){
+                output.result = 200;
+                output.box = $user.box;
+                output.data = $user.kkutu;
+                res.send(output);
+            });
+        });
+    });
 });
 
 };
@@ -68,32 +68,32 @@ EXP[20000000 - 1] = Infinity;
 EXP.push(Infinity);
 
 function useItem($user, $item, gid){
-	var R = { gain: [] };
-	
+    var R = { gain: [] };
+    
     function randchar() {
         return Const.AllChar[Math.floor(Math.random() * Const.AllChar.length)]
     }
 
-	switch($item._id){
-		case 'boxB2':
-			got(pick([ 'b2_fire', 'b2_metal' ]), 1, 604800);
-			break;
-		case 'boxB3':
-			got(pick([ 'b3_do', 'b3_hwa', 'b3_pok' ]), 1, 604800);
-			break;
-		case 'boxB4':
-			got(pick([ 'b4_bb', 'b4_hongsi', 'b4_mint' ]), 1, 604800);
-			break;
-		case 'dictPage':
+    switch($item._id){
+        case 'boxB2':
+            got(pick([ 'b2_fire', 'b2_metal' ]), 1, 604800);
+            break;
+        case 'boxB3':
+            got(pick([ 'b3_do', 'b3_hwa', 'b3_pok' ]), 1, 604800);
+            break;
+        case 'boxB4':
+            got(pick([ 'b4_bb', 'b4_hongsi', 'b4_mint' ]), 1, 604800);
+            break;
+        case 'dictPage':
             var lvl = ((score)=>{
                 var i, l = EXP.length;
                 
                 for(i=0; i<l; i++) if(score < EXP[i]) break;
                 return i+1;
             })($user.kkutu.score)
-			R.exp = Math.round(Math.sqrt(1 + 2 * Math.pow(lvl,4))/30);
-			$user.kkutu.score += R.exp;
-			break;
+            R.exp = Math.round(Math.sqrt(1 + 2 * Math.pow(lvl,4))/30);
+            $user.kkutu.score += R.exp;
+            break;
         case 'dictCpn100':
             got('dictPage', 100, 0)
             break;
@@ -106,17 +106,17 @@ function useItem($user, $item, gid){
         case 'randA':
             got('$WPA'+randchar(), 1, 0)
             break;
-		default:
-			JLog.warn(`Unhandled consumption type: ${$item._id}`);
-	}
-	function got(key, value, term){
-		obtain($user, key, value, term);
-		R.gain.push({ key: key, value: value });
-	}
-	function pick(arr){
-		return arr[Math.floor(Math.random() * arr.length)];
-	}
-	return R;
+        default:
+            JLog.warn(`Unhandled consumption type: ${$item._id}`);
+    }
+    function got(key, value, term){
+        obtain($user, key, value, term);
+        R.gain.push({ key: key, value: value });
+    }
+    function pick(arr){
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+    return R;
 }
 function consume($user, key, value){
     var bd = $user.box[key];

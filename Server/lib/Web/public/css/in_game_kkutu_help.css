@@ -17,77 +17,77 @@
  */
 
 body{
-	padding: 0px;
-	margin: 0px;
-	height: 375px;
-	overflow-y: hidden;
-	font-size: 13px;
-	font-family: 맑은 고딕, 돋움;
+    padding: 0px;
+    margin: 0px;
+    height: 375px;
+    overflow-y: hidden;
+    font-size: 13px;
+    font-family: 맑은 고딕, 돋움;
 }
 img{
-	cursor: pointer;
+    cursor: pointer;
 }
 span{
-	display: none;
+    display: none;
 }
 ol, ul{
-	margin: 2px 0px;
-	padding-left: 20px;
+    margin: 2px 0px;
+    padding-left: 20px;
 }
 h4, h5{
-	margin: 2px 0px;
+    margin: 2px 0px;
 }
 h5{
-	font-weight: normal;
+    font-weight: normal;
 }
 p{
-	margin: 3px 0px;
-	text-indent: 5px;
+    margin: 3px 0px;
+    text-indent: 5px;
 }
 blockquote{
-	padding: 3px 3px 3px 5px;
-	border-left: 5px solid #BBBBBB;
-	margin: 2px;
+    padding: 3px 3px 3px 5px;
+    border-left: 5px solid #BBBBBB;
+    margin: 2px;
 }
 table{
-	width: 100%;
+    width: 100%;
 }
 thead{
-	text-align: center;
-	font-weight: bold;
-	background-color: rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-weight: bold;
+    background-color: rgba(0, 0, 0, 0.1);
 }
 word{
-	padding: 2px;
-	border-radius: 5px;
-	background-color: rgba(0, 0, 0, 0.05);
+    padding: 2px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.05);
 }
 #index{
-	float: left;
-	width: calc(30% - 1px);
+    float: left;
+    width: calc(30% - 1px);
 }
 #list{
-	height: 350px;
-	overflow-y: scroll;
+    height: 350px;
+    overflow-y: scroll;
 }
 #contents{
-	float: left;
-	padding: 2px;
-	border-left: 1px solid #AAAAAA;
-	width: calc(70% - 5px);
+    float: left;
+    padding: 2px;
+    border-left: 1px solid #AAAAAA;
+    width: calc(70% - 5px);
 }
 #page-head{
-	padding-left: 5px;
-	border-bottom: 1px solid #DDDDDD;
-	font-weight: bold;
+    padding-left: 5px;
+    border-bottom: 1px solid #DDDDDD;
+    font-weight: bold;
 }
 .page-body{
-	display: none;
-	padding: 3px;
-	height: 347px;
-	overflow-y: scroll;
+    display: none;
+    padding: 3px;
+    height: 347px;
+    overflow-y: scroll;
 }
 .selected>label{
-	text-decoration: underline;
-	font-weight: bold;
+    text-decoration: underline;
+    font-weight: bold;
 }

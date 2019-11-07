@@ -17,26 +17,26 @@
  */
 
 body{
-	background-color: #232323;
+    background-color: #232323;
 }
 button{
-	border: none;
-	margin: 8px auto;
-	width: 200px;
-	height: 30px;
-	cursor: pointer;
-	box-shadow: 0px 2px 2px #141414;
+    border: none;
+    margin: 8px auto;
+    width: 200px;
+    height: 30px;
+    cursor: pointer;
+    box-shadow: 0px 2px 2px #141414;
 }
 #with-google span{ display: block; }
 .login-with{
-	padding-top: 30px;
-	margin: 30px 0px;
-	text-align: center;
+    padding-top: 30px;
+    margin: 30px 0px;
+    text-align: center;
 }
 .login-legal{
-	padding-top: 50px;
-	color: #BBBBBB;
-	font-size: 11px;
-	text-align: center;
+    padding-top: 50px;
+    color: #BBBBBB;
+    font-size: 11px;
+    text-align: center;
 }
 .login-legal a{ color: #DDDDDD; }

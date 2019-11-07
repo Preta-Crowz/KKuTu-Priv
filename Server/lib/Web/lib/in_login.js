@@ -22,7 +22,7 @@
  */
 
 (function(){
-	$(document).ready(function(){
-		//볕뉘 수정 구문삭제(21~105)
-	});
+    $(document).ready(function(){
+        //볕뉘 수정 구문삭제(21~105)
+    });
 })();

@@ -16,379 +16,379 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var Web		 = require("request");
-var MainDB	 = require("../db");
-var JLog	 = require("../../sub/jjlog");
-var Const	 = require("../../const");
+var Web         = require("request");
+var MainDB     = require("../db");
+var JLog     = require("../../sub/jjlog");
+var Const     = require("../../const");
 
 function obtain($user, key, value, term, addValue){
-	var now = (new Date()).getTime();
-	
-	if(term){
-		if($user.box[key]){
-			if(addValue) $user.box[key].value += value;
-			else $user.box[key].expire += term;
-		}else $user.box[key] = { value: value, expire: Math.round(now * 0.001 + term) }
-	}else{
-		$user.box[key] = ($user.box[key] || 0) + value;
-	}
+    var now = (new Date()).getTime();
+    
+    if(term){
+        if($user.box[key]){
+            if(addValue) $user.box[key].value += value;
+            else $user.box[key].expire += term;
+        }else $user.box[key] = { value: value, expire: Math.round(now * 0.001 + term) }
+    }else{
+        $user.box[key] = ($user.box[key] || 0) + value;
+    }
 }
 function consume($user, key, value, force){
-	var bd = $user.box[key];
-	
-	if(bd.value){
-		// 기한이 끝날 때까지 box 자체에서 사라지지는 않는다. 기한 만료 여부 확인 시점: 1. 로그인 2. box 조회 3. 게임 결과 반영 직전 4. 해당 항목 사용 직전
-		if((bd.value -= value) <= 0){
-			if(force || !bd.expire) delete $user.box[key];
-		}
-	}else{
-		if(($user.box[key] -= value) <= 0) delete $user.box[key];
-	}
+    var bd = $user.box[key];
+    
+    if(bd.value){
+        // 기한이 끝날 때까지 box 자체에서 사라지지는 않는다. 기한 만료 여부 확인 시점: 1. 로그인 2. box 조회 3. 게임 결과 반영 직전 4. 해당 항목 사용 직전
+        if((bd.value -= value) <= 0){
+            if(force || !bd.expire) delete $user.box[key];
+        }
+    }else{
+        if(($user.box[key] -= value) <= 0) delete $user.box[key];
+    }
 }
 
 exports.run = function(Server, page){
 
 Server.get("/box", function(req, res){
-	if(req.session.profile){
-		/*if(Const.ADMIN.indexOf(req.session.profile.id) == -1){
-			return res.send({ error: 555 });
-		}*/
-	}else{
-		return res.send({ error: 400 });
-	}
-	MainDB.users.findOne([ '_id', req.session.profile.id ]).limit([ 'box', true ]).on(function($body){
-		if(!$body){
-			res.send({ error: 400 });
-		}else{
-			res.send($body.box);
-		}
-	});
+    if(req.session.profile){
+        /*if(Const.ADMIN.indexOf(req.session.profile.id) == -1){
+            return res.send({ error: 555 });
+        }*/
+    }else{
+        return res.send({ error: 400 });
+    }
+    MainDB.users.findOne([ '_id', req.session.profile.id ]).limit([ 'box', true ]).on(function($body){
+        if(!$body){
+            res.send({ error: 400 });
+        }else{
+            res.send($body.box);
+        }
+    });
 });
 Server.get("/moremi", function(req, res){
-	var data;
-	var id = req.query.id;
-	if(id){
-		MainDB.users.findOne([ '_id', req.query.id ]).on(function($u){
-			if($u) {
-				data = $u.equip
-				return res.send(data);
-			}
-			else res.send({});
-		});
-	}
+    var data;
+    var id = req.query.id;
+    if(id){
+        MainDB.users.findOne([ '_id', req.query.id ]).on(function($u){
+            if($u) {
+                data = $u.equip
+                return res.send(data);
+            }
+            else res.send({});
+        });
+    }
 
-	function onSession(list){
-		var board = {};
-		
-		Lizard.all(list.map(function(v){
-			if(board[v.profile.id]) return null;
-			else{
-				board[v.profile.id] = true;
-				return getProfile(v.profile.id);
-			}
-		})).then(function(data){
-			res.send({ list: data });
-		});
-	}
-	function getProfile(id){
-		var R = new Lizard.Tail();
-		
-		if(id) MainDB.users.findOne([ '_id', id ]).on(function($u){
-			R.go($u);
-		}); else R.go(null);
-		return R;
-	}
+    function onSession(list){
+        var board = {};
+        
+        Lizard.all(list.map(function(v){
+            if(board[v.profile.id]) return null;
+            else{
+                board[v.profile.id] = true;
+                return getProfile(v.profile.id);
+            }
+        })).then(function(data){
+            res.send({ list: data });
+        });
+    }
+    function getProfile(id){
+        var R = new Lizard.Tail();
+        
+        if(id) MainDB.users.findOne([ '_id', id ]).on(function($u){
+            R.go($u);
+        }); else R.go(null);
+        return R;
+    }
 });
 Server.get("/search", function(req, res){
-	if(!req.query.lang) res.sendStatus(400);
-	if(!req.query.theme) res.sendStatus(400);
-	var TABLE = MainDB.kkutu[req.query.lang];
-	
-	if(!TABLE) res.sendStatus(400);
-	if(!TABLE.find) res.sendStatus(400);
-	TABLE.find([ 'theme', new RegExp(req.query.theme) ]).limit([ '_id', true ]).on(function($docs){
-		res.send( $docs.map(v => v._id) );
-	});
+    if(!req.query.lang) res.sendStatus(400);
+    if(!req.query.theme) res.sendStatus(400);
+    var TABLE = MainDB.kkutu[req.query.lang];
+    
+    if(!TABLE) res.sendStatus(400);
+    if(!TABLE.find) res.sendStatus(400);
+    TABLE.find([ 'theme', new RegExp(req.query.theme) ]).limit([ '_id', true ]).on(function($docs){
+        res.send( $docs.map(v => v._id) );
+    });
 });
 Server.get("/starts/:word", function(req, res){
-	if(!req.query.lang) res.sendStatus(400);
-	var TABLE = MainDB.kkutu[req.query.lang];
-	
-	if(!TABLE) res.sendStatus(400);
-	if(!TABLE.findOne) res.sendStatus(400);
-	TABLE.find([ '_id', new RegExp("^"+req.params.word) ]).on(function($docs){
-		res.send( $docs.map(v => v._id) );
-	});
+    if(!req.query.lang) res.sendStatus(400);
+    var TABLE = MainDB.kkutu[req.query.lang];
+    
+    if(!TABLE) res.sendStatus(400);
+    if(!TABLE.findOne) res.sendStatus(400);
+    TABLE.find([ '_id', new RegExp("^"+req.params.word) ]).on(function($docs){
+        res.send( $docs.map(v => v._id) );
+    });
 });
 Server.get("/ends/:word", function(req, res){
-	if(!req.query.lang) res.sendStatus(400);
-	var TABLE = MainDB.kkutu[req.query.lang];
-	
-	if(!TABLE) res.sendStatus(400);
-	if(!TABLE.findOne) res.sendStatus(400);
-	TABLE.find([ '_id', new RegExp(req.params.word+"$") ]).on(function($docs){
-		res.send( $docs.map(v => v._id) );
-	});
+    if(!req.query.lang) res.sendStatus(400);
+    var TABLE = MainDB.kkutu[req.query.lang];
+    
+    if(!TABLE) res.sendStatus(400);
+    if(!TABLE.findOne) res.sendStatus(400);
+    TABLE.find([ '_id', new RegExp(req.params.word+"$") ]).on(function($docs){
+        res.send( $docs.map(v => v._id) );
+    });
 });
 Server.get("/help", function(req, res){
-	page(req, res, "help", {
-		'KO_INJEONG': Const.KO_INJEONG
-	});
+    page(req, res, "help", {
+        'KO_INJEONG': Const.KO_INJEONG
+    });
 });
 Server.get("/ranking", function(req, res){
-	var pg = Number(req.query.p);
-	var id = req.query.id;
-	
-	if(id){
-		MainDB.redis.getSurround(id, 15).then(function($body){
-			res.send($body);
-		});
-	}else{
-		if(isNaN(pg)) pg = 0;
-		MainDB.redis.getPage(pg, 15).then(function($body){
-			res.send($body);
-		});
-	}
+    var pg = Number(req.query.p);
+    var id = req.query.id;
+    
+    if(id){
+        MainDB.redis.getSurround(id, 15).then(function($body){
+            res.send($body);
+        });
+    }else{
+        if(isNaN(pg)) pg = 0;
+        MainDB.redis.getPage(pg, 15).then(function($body){
+            res.send($body);
+        });
+    }
 });
 Server.get("/injeong/:word", function(req, res){
-	if(!req.session.profile) return res.send({ error: 402 });
-	var word = req.params.word;
-	var theme = req.query.theme;
-	var now = Date.now();
-	
-	if(now - req.session.injBefore < 2000) return res.send({ error: 429 });
-	req.session.injBefore = now;
-	
-	MainDB.kkutu['ko'].findOne([ '_id', word.replace(/[^가-힣0-9]/g, "") ]).on(function($word){
-		if($word) return res.send({ error: 409 });
-		MainDB.kkutu_injeong.findOne([ '_id', word ]).on(function($ij){
-			if($ij){
-				if($ij.theme == '~') return res.send({ error: 406 });
-				else return res.send({ error: 403 });
-			}
-			Web.get("https://namu.moe/w/" + encodeURI(word), function(err, _res){
-				if(err) return res.send({ error: 400 });
-				else if(_res.statusCode != 200) return res.send({ error: 405 });
-				MainDB.kkutu_injeong.insert([ '_id', word ], [ 'theme', theme ], [ 'createdAt', now ], [ 'writer', req.session.profile.id ]).on(function($res){
-					res.send({ message: "OK" });
-				});
-			});
-		});
-	});
+    if(!req.session.profile) return res.send({ error: 402 });
+    var word = req.params.word;
+    var theme = req.query.theme;
+    var now = Date.now();
+    
+    if(now - req.session.injBefore < 2000) return res.send({ error: 429 });
+    req.session.injBefore = now;
+    
+    MainDB.kkutu['ko'].findOne([ '_id', word.replace(/[^가-힣0-9]/g, "") ]).on(function($word){
+        if($word) return res.send({ error: 409 });
+        MainDB.kkutu_injeong.findOne([ '_id', word ]).on(function($ij){
+            if($ij){
+                if($ij.theme == '~') return res.send({ error: 406 });
+                else return res.send({ error: 403 });
+            }
+            Web.get("https://namu.moe/w/" + encodeURI(word), function(err, _res){
+                if(err) return res.send({ error: 400 });
+                else if(_res.statusCode != 200) return res.send({ error: 405 });
+                MainDB.kkutu_injeong.insert([ '_id', word ], [ 'theme', theme ], [ 'createdAt', now ], [ 'writer', req.session.profile.id ]).on(function($res){
+                    res.send({ message: "OK" });
+                });
+            });
+        });
+    });
 });
 Server.get("/cf/:word", function(req, res){
-	res.send(getCFRewards(req.params.word, Number(req.query.l || 0), req.query.b == "1"));
+    res.send(getCFRewards(req.params.word, Number(req.query.l || 0), req.query.b == "1"));
 });
 Server.get("/shop", function(req, res){
-	MainDB.kkutu_shop.find().limit([ 'cost', true ], [ 'term', true ], [ 'group', true ], [ 'options', true ], [ 'updatedAt', true ]).on(function($goods){
-		res.json({ goods: $goods });
-	});
-	// res.json({ error: 555 });
+    MainDB.kkutu_shop.find().limit([ 'cost', true ], [ 'term', true ], [ 'group', true ], [ 'options', true ], [ 'updatedAt', true ]).on(function($goods){
+        res.json({ goods: $goods });
+    });
+    // res.json({ error: 555 });
 });
 
 // POST
 Server.post("/exordial", function(req, res){
-	var text = req.body.data || "";
-	
-	if(req.session.profile){
-		text = text.slice(0, 100);
-		MainDB.users.update([ '_id', req.session.profile.id ]).set([ 'exordial', text ]).on(function($res){
-			res.send({ text: text });
-		});
-	}else res.send({ error: 400 });
+    var text = req.body.data || "";
+    
+    if(req.session.profile){
+        text = text.slice(0, 100);
+        MainDB.users.update([ '_id', req.session.profile.id ]).set([ 'exordial', text ]).on(function($res){
+            res.send({ text: text });
+        });
+    }else res.send({ error: 400 });
 });
 Server.post("/buy/:id", function(req, res){
-	if(req.session.profile){
-		var uid = req.session.profile.id;
-		var gid = req.params.id;
-		
-		MainDB.kkutu_shop.findOne([ '_id', gid ]).on(function($item){
-			if(!$item) return res.json({ error: 400 });
-			if($item.cost < 0) return res.json({ error: 400 });
-			MainDB.users.findOne([ '_id', uid ]).limit([ 'money', true ], [ 'box', true ]).on(function($user){
-				if(!$user) return res.json({ error: 400 });
-				if(!$user.box) $user.box = {};
-				var postM = $user.money - $item.cost;
-				
-				if(postM < 0) return res.send({ result: 400 });
-				
-				obtain($user, gid, 1, $item.term);
-				MainDB.users.update([ '_id', uid ]).set(
-					[ 'money', postM ],
-					[ 'box', $user.box ]
-				).on(function($fin){
-					res.send({ result: 200, money: postM, box: $user.box });
-					JLog.log("[PURCHASED] " + gid + " by " + uid);
-				});
-				// HIT를 올리는 데에 동시성 문제가 발생한다. 조심하자.
-				MainDB.kkutu_shop.update([ '_id', gid ]).set([ 'hit', $item.hit + 1 ]).on();
-			});
-		});
-	}else res.json({ error: 423 });
+    if(req.session.profile){
+        var uid = req.session.profile.id;
+        var gid = req.params.id;
+        
+        MainDB.kkutu_shop.findOne([ '_id', gid ]).on(function($item){
+            if(!$item) return res.json({ error: 400 });
+            if($item.cost < 0) return res.json({ error: 400 });
+            MainDB.users.findOne([ '_id', uid ]).limit([ 'money', true ], [ 'box', true ]).on(function($user){
+                if(!$user) return res.json({ error: 400 });
+                if(!$user.box) $user.box = {};
+                var postM = $user.money - $item.cost;
+                
+                if(postM < 0) return res.send({ result: 400 });
+                
+                obtain($user, gid, 1, $item.term);
+                MainDB.users.update([ '_id', uid ]).set(
+                    [ 'money', postM ],
+                    [ 'box', $user.box ]
+                ).on(function($fin){
+                    res.send({ result: 200, money: postM, box: $user.box });
+                    JLog.log("[PURCHASED] " + gid + " by " + uid);
+                });
+                // HIT를 올리는 데에 동시성 문제가 발생한다. 조심하자.
+                MainDB.kkutu_shop.update([ '_id', gid ]).set([ 'hit', $item.hit + 1 ]).on();
+            });
+        });
+    }else res.json({ error: 423 });
 });
 Server.post("/equip/:id", function(req, res){
-	if(!req.session.profile) return res.json({ error: 400 });
-	var uid = req.session.profile.id;
-	var gid = req.params.id;
-	var isLeft = req.body.isLeft == "true";
-	var now = Date.now() * 0.001;
-	
-	MainDB.users.findOne([ '_id', uid ]).limit([ 'box', true ], [ 'equip', true ]).on(function($user){
-		if(!$user) return res.json({ error: 400 });
-		if(!$user.box) $user.box = {};
-		if(!$user.equip) $user.equip = {};
-		var q = $user.box[gid], r;
-		
-		MainDB.kkutu_shop.findOne([ '_id', gid ]).limit([ 'group', true ]).on(function($item){
-			if(!$item) return res.json({ error: 430 });
-			if(!Const.AVAIL_EQUIP.includes($item.group)) return res.json({ error: 400 });
-			
-			var part = $item.group;
-			if(part.substr(0, 3) == "BDG") part = "BDG";
-			if(part == "Mhand") part = isLeft ? "Mlhand" : "Mrhand";
-			var qid = $user.equip[part];
-			
-			if(qid){
-				r = $user.box[qid];
-				if(r && r.expire){
-					obtain($user, qid, 1, r.expire, true);
-				}else{
-					obtain($user, qid, 1, now + $item.term, true);
-				}
-			}
-			if(qid == $item._id){
-				delete $user.equip[part];
-			}else{
-				if(!q) return res.json({ error: 430 });
-				consume($user, gid, 1);
-				$user.equip[part] = $item._id;
-			}
-			MainDB.users.update([ '_id', uid ]).set([ 'box', $user.box ], [ 'equip', $user.equip ]).on(function($res){
-				res.send({ result: 200, box: $user.box, equip: $user.equip });
-			});
-		});
-	});
+    if(!req.session.profile) return res.json({ error: 400 });
+    var uid = req.session.profile.id;
+    var gid = req.params.id;
+    var isLeft = req.body.isLeft == "true";
+    var now = Date.now() * 0.001;
+    
+    MainDB.users.findOne([ '_id', uid ]).limit([ 'box', true ], [ 'equip', true ]).on(function($user){
+        if(!$user) return res.json({ error: 400 });
+        if(!$user.box) $user.box = {};
+        if(!$user.equip) $user.equip = {};
+        var q = $user.box[gid], r;
+        
+        MainDB.kkutu_shop.findOne([ '_id', gid ]).limit([ 'group', true ]).on(function($item){
+            if(!$item) return res.json({ error: 430 });
+            if(!Const.AVAIL_EQUIP.includes($item.group)) return res.json({ error: 400 });
+            
+            var part = $item.group;
+            if(part.substr(0, 3) == "BDG") part = "BDG";
+            if(part == "Mhand") part = isLeft ? "Mlhand" : "Mrhand";
+            var qid = $user.equip[part];
+            
+            if(qid){
+                r = $user.box[qid];
+                if(r && r.expire){
+                    obtain($user, qid, 1, r.expire, true);
+                }else{
+                    obtain($user, qid, 1, now + $item.term, true);
+                }
+            }
+            if(qid == $item._id){
+                delete $user.equip[part];
+            }else{
+                if(!q) return res.json({ error: 430 });
+                consume($user, gid, 1);
+                $user.equip[part] = $item._id;
+            }
+            MainDB.users.update([ '_id', uid ]).set([ 'box', $user.box ], [ 'equip', $user.equip ]).on(function($res){
+                res.send({ result: 200, box: $user.box, equip: $user.equip });
+            });
+        });
+    });
 });
 Server.post("/payback/:id", function(req, res){
-	if(!req.session.profile) return res.json({ error: 400 });
-	var uid = req.session.profile.id;
-	var gid = req.params.id;
-	var isDyn = gid.charAt() == '$';
-	
-	MainDB.users.findOne([ '_id', uid ]).limit([ 'money', true ], [ 'box', true ]).on(function($user){
-		if(!$user) return res.json({ error: 400 });
-		if(!$user.box) $user.box = {};
-		var q = $user.box[gid];
-		
-		if(!q) return res.json({ error: 430 });
-		MainDB.kkutu_shop.findOne([ '_id', isDyn ? gid.slice(0, 4) : gid ]).limit([ 'cost', true ]).on(function($item){
-			if(!$item) return res.json({ error: 430 });
-			
-			consume($user, gid, 1, true);
-			$user.money = Number($user.money) + Math.round(0.2 * Number($item.cost));
-			MainDB.users.update([ '_id', uid ]).set([ 'money', $user.money ], [ 'box', $user.box ]).on(function($res){
-				res.send({ result: 200, box: $user.box, money: $user.money });
-			});
-		});
-	});
+    if(!req.session.profile) return res.json({ error: 400 });
+    var uid = req.session.profile.id;
+    var gid = req.params.id;
+    var isDyn = gid.charAt() == '$';
+    
+    MainDB.users.findOne([ '_id', uid ]).limit([ 'money', true ], [ 'box', true ]).on(function($user){
+        if(!$user) return res.json({ error: 400 });
+        if(!$user.box) $user.box = {};
+        var q = $user.box[gid];
+        
+        if(!q) return res.json({ error: 430 });
+        MainDB.kkutu_shop.findOne([ '_id', isDyn ? gid.slice(0, 4) : gid ]).limit([ 'cost', true ]).on(function($item){
+            if(!$item) return res.json({ error: 430 });
+            
+            consume($user, gid, 1, true);
+            $user.money = Number($user.money) + Math.round(0.2 * Number($item.cost));
+            MainDB.users.update([ '_id', uid ]).set([ 'money', $user.money ], [ 'box', $user.box ]).on(function($res){
+                res.send({ result: 200, box: $user.box, money: $user.money });
+            });
+        });
+    });
 });
 function blendWord(word){
-	var lang = parseLanguage(word);
-	if (!lang) return "ERROR:CONTACT_ADMIN"
-	var i, kl = [];
-	var kr = [];
-	var spChar = [" ","-","_","・","ー"];
+    var lang = parseLanguage(word);
+    if (!lang) return "ERROR:CONTACT_ADMIN"
+    var i, kl = [];
+    var kr = [];
+    var spChar = [" ","-","_","・","ー"];
 
-	if(lang == "sp-g") {
-		return spChar[Math.floor(Math.random() * spChar.length)]
-	}
-	if(lang == "ko-c"){
-		for(i=word.length-1; i>=0; i--){
-			var k = word.charCodeAt(i) - 0xAC00;
-			
-			kl.push([ Math.floor(k/28/21), Math.floor(k/28)%21, k%28 ]);
-		}
-		[0,1,2].sort((a, b) => (Math.random() < 0.5)).forEach((v, i) => {
-			kr.push(kl[v][i]);
-		});
-		return String.fromCharCode(((kr[0] * 21) + kr[1]) * 28 + kr[2] + 0xAC00);
-	}
-	if(lang == "en-c") { return randChar("A", "Z") }
-	if(lang == "en-s") { return randChar("a", "z") }
-	if(lang == "ja-h") { return randChar("ぁ", "ゔ") }
-	if(lang == "ja-k") { return randChar("ァ", "ヺ") }
-	if(lang == "ko-l") { return randChar("ㄱ", "ㅣ") }
-	if(lang == "no-g") { return randChar("0", "9") }
-	return "ERROR:CONTACT_ADMIN"
+    if(lang == "sp-g") {
+        return spChar[Math.floor(Math.random() * spChar.length)]
+    }
+    if(lang == "ko-c"){
+        for(i=word.length-1; i>=0; i--){
+            var k = word.charCodeAt(i) - 0xAC00;
+            
+            kl.push([ Math.floor(k/28/21), Math.floor(k/28)%21, k%28 ]);
+        }
+        [0,1,2].sort((a, b) => (Math.random() < 0.5)).forEach((v, i) => {
+            kr.push(kl[v][i]);
+        });
+        return String.fromCharCode(((kr[0] * 21) + kr[1]) * 28 + kr[2] + 0xAC00);
+    }
+    if(lang == "en-c") { return randChar("A", "Z") }
+    if(lang == "en-s") { return randChar("a", "z") }
+    if(lang == "ja-h") { return randChar("ぁ", "ゔ") }
+    if(lang == "ja-k") { return randChar("ァ", "ヺ") }
+    if(lang == "ko-l") { return randChar("ㄱ", "ㅣ") }
+    if(lang == "no-g") { return randChar("0", "9") }
+    return "ERROR:CONTACT_ADMIN"
 }
 function randChar(first,end){
-	var fcode = first.charCodeAt(0)
-	var ecode = end.charCodeAt(0)
-	return String.fromCharCode(fcode + Math.floor(Math.random() * (ecode-fcode)));
+    var fcode = first.charCodeAt(0)
+    var ecode = end.charCodeAt(0)
+    return String.fromCharCode(fcode + Math.floor(Math.random() * (ecode-fcode)));
 }
 function parseLanguage(word){
-	if (word.match(/^[A-Z]*$/)) return "en-c"
-	if (word.match(/^[a-z]*$/)) return "en-s"
-	if (word.match(/^[ぁ-ゔ]*$/)) return "ja-h"
-	if (word.match(/^[ァ-ヺ]*$/)) return "ja-k"
-	if (word.match(/^[ㄱ-ㅣ]*$/)) return "ko-l"
-	if (word.match(/^[가-힣]*$/)) return "ko-c"
-	if (word.match(/^[0-9]*$/)) return "no-g"
-	if (word.match(/^[ \-\_\・\ー]*$/)) return "sp-g"
-	return null
+    if (word.match(/^[A-Z]*$/)) return "en-c"
+    if (word.match(/^[a-z]*$/)) return "en-s"
+    if (word.match(/^[ぁ-ゔ]*$/)) return "ja-h"
+    if (word.match(/^[ァ-ヺ]*$/)) return "ja-k"
+    if (word.match(/^[ㄱ-ㅣ]*$/)) return "ko-l"
+    if (word.match(/^[가-힣]*$/)) return "ko-c"
+    if (word.match(/^[0-9]*$/)) return "no-g"
+    if (word.match(/^[ \-\_\・\ー]*$/)) return "sp-g"
+    return null
 }
 Server.post("/cf", function(req, res){
-	if(!req.session.profile) return res.json({ error: 400 });
-	var uid = req.session.profile.id;
-	var tray = (req.body.tray || "").split('|');
-	var i, o;
-	
-	if(tray.length < 1 || tray.length > 100) return res.json({ error: 400 });
-	MainDB.users.findOne([ '_id', uid ]).limit([ 'money', true ], [ 'box', true ]).on(function($user){
-		if(!$user) return res.json({ error: 400 });
-		if(!$user.box) $user.box = {};
-		var req = {}, word = "", level = 0;
-		var cfr, gain = [];
-		var blend;
-		
-		for(i in tray){
-			word += tray[i].slice(4);
-			level += 68 - tray[i].charCodeAt(3);
-			req[tray[i]] = (req[tray[i]] || 0) + 1;
-			if(($user.box[tray[i]] || 0) < req[tray[i]]) return res.json({ error: 434 });
-		}
-		var lang = parseLanguage(word)
-		if (!lang) return res.json({ error: 439 });
-		lang = lang.split("-")[0]
-		function final($dic){
-			if(!$dic){
-				if(word.length == 3){
-					blend = true;
-				}else return res.json({ error: 404 });
-			}
-			cfr = getCFRewards(word, level, blend);
-			if($user.money < cfr.cost) return res.json({ error: 407 });
-			for(i in req) consume($user, i, req[i]);
-			for(i in cfr.data){
-				o = cfr.data[i];
-				
-				if(Math.random() >= o.rate) continue;
-				if(o.key.charAt(4) == "?"){
-					o.key = o.key.slice(0, 4) + (blend ? blendWord(word) : word.charAt(Math.floor(Math.random() * word.length)));
-				}
-				obtain($user, o.key, o.value, o.term);
-				gain.push(o);
-			}
-			$user.money -= cfr.cost;
-			MainDB.users.update([ '_id', uid ]).set([ 'money', $user.money ], [ 'box', $user.box ]).on(function($res){
-				res.send({ result: 200, box: $user.box, money: $user.money, gain: gain });
-			});
-		}
-		if(lang == "ko"|| lang == "en"){
-			final(MainDB.kkutu[lang].findOne([ '_id', word ]))
-		} else final(null)
-	});
-	// res.send(getCFRewards(req.params.word, Number(req.query.l || 0)));
+    if(!req.session.profile) return res.json({ error: 400 });
+    var uid = req.session.profile.id;
+    var tray = (req.body.tray || "").split('|');
+    var i, o;
+    
+    if(tray.length < 1 || tray.length > 100) return res.json({ error: 400 });
+    MainDB.users.findOne([ '_id', uid ]).limit([ 'money', true ], [ 'box', true ]).on(function($user){
+        if(!$user) return res.json({ error: 400 });
+        if(!$user.box) $user.box = {};
+        var req = {}, word = "", level = 0;
+        var cfr, gain = [];
+        var blend;
+        
+        for(i in tray){
+            word += tray[i].slice(4);
+            level += 68 - tray[i].charCodeAt(3);
+            req[tray[i]] = (req[tray[i]] || 0) + 1;
+            if(($user.box[tray[i]] || 0) < req[tray[i]]) return res.json({ error: 434 });
+        }
+        var lang = parseLanguage(word)
+        if (!lang) return res.json({ error: 439 });
+        lang = lang.split("-")[0]
+        function final($dic){
+            if(!$dic){
+                if(word.length == 3){
+                    blend = true;
+                }else return res.json({ error: 404 });
+            }
+            cfr = getCFRewards(word, level, blend);
+            if($user.money < cfr.cost) return res.json({ error: 407 });
+            for(i in req) consume($user, i, req[i]);
+            for(i in cfr.data){
+                o = cfr.data[i];
+                
+                if(Math.random() >= o.rate) continue;
+                if(o.key.charAt(4) == "?"){
+                    o.key = o.key.slice(0, 4) + (blend ? blendWord(word) : word.charAt(Math.floor(Math.random() * word.length)));
+                }
+                obtain($user, o.key, o.value, o.term);
+                gain.push(o);
+            }
+            $user.money -= cfr.cost;
+            MainDB.users.update([ '_id', uid ]).set([ 'money', $user.money ], [ 'box', $user.box ]).on(function($res){
+                res.send({ result: 200, box: $user.box, money: $user.money, gain: gain });
+            });
+        }
+        if(lang == "ko"|| lang == "en"){
+            final(MainDB.kkutu[lang].findOne([ '_id', word ]))
+        } else final(null)
+    });
+    // res.send(getCFRewards(req.params.word, Number(req.query.l || 0)));
 });
 Server.get("/dict/:word", function(req, res){
     var word = req.params.word;
@@ -410,47 +410,47 @@ Server.get("/dict/:word", function(req, res){
 
 };
 function getCFRewards(word, level, blend){
-	var R = [];
-	var f = {
-		len: word.length, // 최대 6
-		lev: level // 최대 18
-	};
-	var cost = 20 * f.lev;
-	var wur = f.len / 36; // 최대 2.867
-	
-	if(blend){
-		if(wur >= 0.5){
-			R.push({ key: "$WPA?", value: 1, rate: 1 });
-		}else if(wur >= 0.35){
-			R.push({ key: "$WPB?", value: 1, rate: 1 });
-		}else if(wur >= 0.05){
-			R.push({ key: "$WPC?", value: 1, rate: 1 });
-		}
-		cost = Math.round(cost * 0.2);
-	}else{
-		R.push({ key: "dictPage", value: f.len, rate: 1 });
-		R.push({ key: "boxB4", value: 1, rate: Math.min(1, f.lev / 7) });
-		if(f.lev >= 5){
-			R.push({ key: "boxB3", value: 1, rate: Math.min(1, f.lev / 15) });
-			cost += 10 * f.lev;
-			wur += f.lev / 20;
-		}
-		if(f.lev >= 10){
-			R.push({ key: "boxB2", value: 1, rate: Math.min(1, f.lev / 30) });
-			cost += 20 * f.lev;
-			wur += f.lev / 10;
-		}
-		if(wur >= 0.05){
-			if(wur > 1) R.push({ key: "$WPC?", value: Math.floor(wur), rate: 1 });
-			R.push({ key: "$WPC?", value: 1, rate: wur % 1 });
-		}
-		if(wur >= 0.35){
-			if(wur > 2) R.push({ key: "$WPB?", value: Math.floor(wur / 2), rate: 1 });
-			R.push({ key: "$WPB?", value: 1, rate: (wur / 2) % 1 });
-		}
-		if(wur >= 0.5){
-			R.push({ key: "$WPA?", value: 1, rate: wur / 3 });
-		}
-	}
-	return { data: R, cost: cost };
+    var R = [];
+    var f = {
+        len: word.length, // 최대 6
+        lev: level // 최대 18
+    };
+    var cost = 20 * f.lev;
+    var wur = f.len / 36; // 최대 2.867
+    
+    if(blend){
+        if(wur >= 0.5){
+            R.push({ key: "$WPA?", value: 1, rate: 1 });
+        }else if(wur >= 0.35){
+            R.push({ key: "$WPB?", value: 1, rate: 1 });
+        }else if(wur >= 0.05){
+            R.push({ key: "$WPC?", value: 1, rate: 1 });
+        }
+        cost = Math.round(cost * 0.2);
+    }else{
+        R.push({ key: "dictPage", value: f.len, rate: 1 });
+        R.push({ key: "boxB4", value: 1, rate: Math.min(1, f.lev / 7) });
+        if(f.lev >= 5){
+            R.push({ key: "boxB3", value: 1, rate: Math.min(1, f.lev / 15) });
+            cost += 10 * f.lev;
+            wur += f.lev / 20;
+        }
+        if(f.lev >= 10){
+            R.push({ key: "boxB2", value: 1, rate: Math.min(1, f.lev / 30) });
+            cost += 20 * f.lev;
+            wur += f.lev / 10;
+        }
+        if(wur >= 0.05){
+            if(wur > 1) R.push({ key: "$WPC?", value: Math.floor(wur), rate: 1 });
+            R.push({ key: "$WPC?", value: 1, rate: wur % 1 });
+        }
+        if(wur >= 0.35){
+            if(wur > 2) R.push({ key: "$WPB?", value: Math.floor(wur / 2), rate: 1 });
+            R.push({ key: "$WPB?", value: 1, rate: (wur / 2) % 1 });
+        }
+        if(wur >= 0.5){
+            R.push({ key: "$WPA?", value: 1, rate: wur / 3 });
+        }
+    }
+    return { data: R, cost: cost };
 }

@@ -22,30 +22,30 @@
  */
 
  body{
-	background-color: #232323;
+    background-color: #232323;
 }
 button{
-	border: none;
-	margin: 8px auto;
-	width: 200px;
-	height: 30px;
-	cursor: pointer;
-	box-shadow: 0px 2px 2px #141414;
+    border: none;
+    margin: 8px auto;
+    width: 200px;
+    height: 30px;
+    cursor: pointer;
+    box-shadow: 0px 2px 2px #141414;
 }
 .login {
-	color: #FFFFFF;
-	background-color: #0099FF;
+    color: #FFFFFF;
+    background-color: #0099FF;
 }
 .middle {
-	position: absolute;
-	top: 0; 
-	bottom: 0; 
-	left: 0; 
-	right: 0;
-	margin: auto; 
-	height: 240px; 
-	width: 70%;
+    position: absolute;
+    top: 0; 
+    bottom: 0; 
+    left: 0; 
+    right: 0;
+    margin: auto; 
+    height: 240px; 
+    width: 70%;
 }
 .middle p {
-	text-align: center;
+    text-align: center;
 }
