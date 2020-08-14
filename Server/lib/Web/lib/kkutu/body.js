@@ -2528,10 +2528,10 @@ function getLevelImage(score){
 function getImage(url){
     return $("<div>").addClass("jt-image").css('background-image', "url('"+url+"')");
 }
-function getExternal(url){
-    ext = jQuery.get(url);
-    return ext.responseText;
-}
+// function getExternal(url){
+//     ext = jQuery.get(url);
+//     return ext.responseText;
+// }
 function getAuthImage(type){
     url = "/img/kkutu/guest.png";
     switch(type){
@@ -2539,7 +2539,9 @@ function getAuthImage(type){
             url = "/img/auth/naver.png";
             break;
         case "google":
-            return getExternal("/img/auth/google.svg");
+            url = "/img/auth/google.png";
+            break;
+            // return getExternal("/img/auth/google.svg");
         default:
             url = "/img/kkutu/guest.png";
     }
