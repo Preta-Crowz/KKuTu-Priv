@@ -113,6 +113,8 @@ mixin PageHead(min)
 		link(rel='stylesheet', href='/css/expl.css')
 	script(type='text/javascript', src='/js/jquery.js')
 	script(type='text/javascript', src='/language/'+locals.page.replace("/", "_")+'/'+locals.lang)
+	script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js')
+
 	
 	if PUBLIC && !SESSION.admin
 		//script(type='text/javascript', src='/js/google.js')

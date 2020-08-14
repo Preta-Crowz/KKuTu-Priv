@@ -3478,6 +3478,7 @@ function requestProfile(id){
         renderMoremi($pi, o.equip);
     }
     $data._profiled = id;
+    $("#profile-copy").hide();
     $stage.dialog.profileKick.hide();
     $stage.dialog.profileShut.hide();
     $stage.dialog.profileDress.hide();
@@ -3489,6 +3490,12 @@ function requestProfile(id){
         $stage.dialog.profileShut.show();
         $stage.dialog.profileWhisper.show();
     }
+    if(!o.robot){
+        $("#profile-copy").show();
+        $("#profile-copy").attr("data-clipboard-text", o.id.toString());
+        var idCopyBtn = document.getElementById("profile-copy");
+        var clipboard = new Clipboard(idCopyBtn);
+    }
     if($data.room){
         if($data.id != id && $data.id == $data.room.master){
             $stage.dialog.profileKick.show();
@@ -3499,6 +3506,7 @@ function requestProfile(id){
     $stage.dialog.profile.show();
     global.expl($ex);
 }
+
 function requestInvite(id){
     var nick;
     
