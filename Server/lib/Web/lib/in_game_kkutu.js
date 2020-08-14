@@ -2830,7 +2830,8 @@ function userListBar(o, forInvite){
     
     if(forInvite){
         $R = $("<div>").attr('id', "invite-item-"+o.id).addClass("invite-item users-item")
-        .append($("<div>").addClass("jt-image users-image").css('background-image', "url('"+o.profile.image+"')"))
+        .append(getAuthImage(o.profile.id.split("-")[0]).addClass("users-image"))
+        // .append($("<div>").addClass("jt-image users-image").css('background-image', "url('"+(o.profile.image || "/img/kkutu/guest.png")+"')"))
         .append(getLevelImage(o.data.score).addClass("users-level"))
         // .append($("<div>").addClass("jt-image users-from").css('background-image', "url('/img/kkutu/"+o.profile.type+".png')"))
         .append($("<div>").addClass("users-name").html(o.profile.title || o.profile.name))
@@ -2839,7 +2840,8 @@ function userListBar(o, forInvite){
         });
     }else{
         $R = $("<div>").attr('id', "users-item-"+o.id).addClass("users-item")
-        .append($("<div>").addClass("jt-image users-image").css('background-image', "url('"+o.profile.image+"')"))
+        .append(getAuthImage(o.profile.id.split("-")[0]).addClass("users-image"))
+        // .append($("<div>").addClass("jt-image users-image").css('background-image', "url('"+(o.profile.image || "/img/kkutu/guest.png")+"')"))
         .append(getLevelImage(o.data.score).addClass("users-level"))
         // .append($("<div>").addClass("jt-image users-from").css('background-image', "url('/img/kkutu/"+o.profile.type+".png')"))
         .append($("<div>").addClass("users-name ellipse").html(o.profile.title || o.profile.name))
@@ -3445,7 +3447,7 @@ function requestProfile(id){
     $("#ProfileDiag .dialog-title").html((o.profile.title || o.profile.name) + L['sProfile']);
     $(".profile-head").empty().append($pi = $("<div>").addClass("moremi profile-moremi"))
         .append($("<div>").addClass("profile-head-item")
-            .append(getImage(o.profile.image).addClass("profile-image"))
+            .append(getImage(o.profile.image || "/img/kkutu/guest.png").addClass("profile-image"))
             .append(getAuthImage(o.id.toString().split("-")[0]).addClass("profile-authimage"))
             .append($("<div>").addClass("profile-title ellipse").html(o.profile.title || o.profile.name)
                 // .append($("<label>").addClass("profile-tag").html(" #" + o.id.toString().substr(0, 5)))
@@ -4409,7 +4411,7 @@ function getImage(url){
 //     return ext.responseText;
 // }
 function getAuthImage(type){
-    url = "/img/kkutu/"+type+".png";
+    url = "/img/auth/"+type+".png";
     return getImage(url);
 }
 
