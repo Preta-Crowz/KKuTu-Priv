@@ -3446,8 +3446,9 @@ function requestProfile(id){
     $(".profile-head").empty().append($pi = $("<div>").addClass("moremi profile-moremi"))
         .append($("<div>").addClass("profile-head-item")
             .append(getImage(o.profile.image).addClass("profile-image"))
+            .append(getAuthImage(o.id.toString().split("-")[0]).addClass("profile-authimage"))
             .append($("<div>").addClass("profile-title ellipse").html(o.profile.title || o.profile.name)
-                .append($("<label>").addClass("profile-tag").html(" #" + o.id.toString().substr(0, 5)))
+                // .append($("<label>").addClass("profile-tag").html(" #" + o.id.toString().substr(0, 5)))
             )
         )
         .append($("<div>").addClass("profile-head-item")
@@ -4395,6 +4396,24 @@ function getLevelImage(score){
 function getImage(url){
     return $("<div>").addClass("jt-image").css('background-image', "url('"+url+"')");
 }
+function getExternal(url){
+    ext = jQuery.get(url);
+    return ext.responseText;
+}
+function getAuthImage(type){
+    url = "/img/kkutu/guest.png";
+    switch(type){
+        case "naver":
+            url = "/img/auth/naver.png";
+            break;
+        case "google":
+            return getExternal("/img/auth/google.svg");
+        default:
+            url = "/img/kkutu/guest.png";
+    }
+    return getImage(url);
+}
+
 function getOptions(mode, opts, hash){
     var R = [ L["mode"+MODE[mode]] ];
     var i, k;
