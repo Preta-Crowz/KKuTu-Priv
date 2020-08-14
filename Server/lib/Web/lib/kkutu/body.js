@@ -2533,7 +2533,7 @@ function getImage(url){
 //     return ext.responseText;
 // }
 function getAuthImage(type){
-    url = "/img/kkutu/"+type+".png";
+    url = "/img/auth/"+type+".png";
     return getImage(url);
 }
 

@@ -4409,18 +4409,7 @@ function getImage(url){
 //     return ext.responseText;
 // }
 function getAuthImage(type){
-    url = "/img/kkutu/guest.png";
-    switch(type){
-        case "naver":
-            url = "/img/auth/naver.png";
-            break;
-        case "google":
-            url = "/img/auth/google.png";
-            break;
-            // return getExternal("/img/auth/google.svg");
-        default:
-            url = "/img/kkutu/guest.png";
-    }
+    url = "/img/kkutu/"+type+".png";
     return getImage(url);
 }
 
