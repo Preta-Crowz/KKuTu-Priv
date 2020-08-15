@@ -98,6 +98,7 @@ $(document).ready(function(){
             roomInfo: $("#RoomInfoDiag"),
                 roomInfoJoin: $("#room-info-join"),
             profile: $("#ProfileDiag"),
+                profileCopy: $("#profile-copy"),
                 profileShut: $("#profile-shut"),
                 profileHandover: $("#profile-handover"),
                 profileKick: $("#profile-kick"),
