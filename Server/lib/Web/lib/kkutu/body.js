@@ -954,7 +954,7 @@ function userListBar(o, forInvite){
     
     if(forInvite){
         $R = $("<div>").attr('id', "invite-item-"+o.id).addClass("invite-item users-item")
-        .append(getAuthImage(o.profile.id.split("-")[0]).addClass("users-image"))
+        .append(getImage("/img/kkutu/"+(o.profile.id.toString().split("-")[0])+".png").addClass("users-image"))
         // .append($("<div>").addClass("jt-image users-image").css('background-image', "url('"+(o.profile.image || "/img/kkutu/guest.png")+"')"))
         .append(getLevelImage(o.data.score).addClass("users-level"))
         // .append($("<div>").addClass("jt-image users-from").css('background-image', "url('/img/kkutu/"+o.profile.type+".png')"))
@@ -964,7 +964,7 @@ function userListBar(o, forInvite){
         });
     }else{
         $R = $("<div>").attr('id', "users-item-"+o.id).addClass("users-item")
-        .append(getAuthImage(o.profile.id.split("-")[0]).addClass("users-image"))
+        .append(getImage("/img/kkutu/"+(o.profile.id.toString().split("-")[0])+".png").addClass("users-image"))
         // .append($("<div>").addClass("jt-image users-image").css('background-image', "url('"+(o.profile.image || "/img/kkutu/guest.png")+"')"))
         .append(getLevelImage(o.data.score).addClass("users-level"))
         // .append($("<div>").addClass("jt-image users-from").css('background-image', "url('/img/kkutu/"+o.profile.type+".png')"))
@@ -1572,7 +1572,7 @@ function requestProfile(id){
     $(".profile-head").empty().append($pi = $("<div>").addClass("moremi profile-moremi"))
         .append($("<div>").addClass("profile-head-item")
             .append(getImage(o.profile.image || "/img/kkutu/guest.png").addClass("profile-image"))
-            .append(getAuthImage(o.id.toString().split("-")[0]).addClass("profile-authimage"))
+            .append(getImage("/img/kkutu/"+(o.profile.id.toString().split("-")[0])+".png").addClass("profile-authimage"))
             .append($("<div>").addClass("profile-title ellipse").html(o.profile.title || o.profile.name)
                 // .append($("<label>").addClass("profile-tag").html(" #" + o.id.toString().substr(0, 5)))
             )
@@ -2529,14 +2529,6 @@ function getLevelImage(score){
 }
 function getImage(url){
     return $("<div>").addClass("jt-image").css('background-image', "url('"+url+"')");
-}
-// function getExternal(url){
-//     ext = jQuery.get(url);
-//     return ext.responseText;
-// }
-function getAuthImage(type){
-    url = "/img/auth/"+type+".png";
-    return getImage(url);
 }
 
 function getOptions(mode, opts, hash){
