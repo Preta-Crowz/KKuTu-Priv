@@ -18,11 +18,7 @@ module.exports.strategyConfig = {
 module.exports.strategy = (process, MainDB, Ajae) => {
     return (req, accessToken, refreshToken, profile, done) => {
         const $p = {};
-<<<<<<< HEAD
-=======
-		
 		// var fullname = profile.username+"#"+profile.discriminator;
->>>>>>> 8454e7b85f2389815642645ae4b2e72deec4f94e
 
         $p.authType = "spotify";
         $p.id = $p.authType+"-"+profile.id;
