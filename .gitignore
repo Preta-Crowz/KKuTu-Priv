@@ -20,3 +20,6 @@ wnjpn.db
 Server/script.txt
 rules.txt
 pp_modules.zip
+*.ps1
+Server/lib/Web/lib/in_game_kkutu.js
+Server/lib/Web/public/js/in_game_kkutu.min.js
