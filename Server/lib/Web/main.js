@@ -247,6 +247,7 @@ Server.get("/", function(req, res){
 			'EN_INJEONG': Const.EN_INJEONG,
 			'KO_THEME': Const.KO_THEME,
 			'EN_THEME': Const.EN_THEME,
+            'JA_THEME': Const.JA_THEME,
 			'IJP_EXCEPT': Const.IJP_EXCEPT,
 			'ogImage': "http://kkutu.kr/img/kkutu/logo.png",
 			'ogURL': "http://kkutu.kr/",

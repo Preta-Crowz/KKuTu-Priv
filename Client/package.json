@@ -1,0 +1,19 @@
+{
+  "name": "kkutu-pbclient",
+  "version": "KKuTu 2.5.0 Blue Beta1",
+  "description": "KKuTu Client - Blue edition",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/JJoriping/KKuTu",
+  "keywords": [
+    "kkutu"
+  ],
+  "author": "JJoriping / Project_Beta",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "electron": "^1.4.15",
+    "electron-pug": "^1.5.1"
+  }
+}
