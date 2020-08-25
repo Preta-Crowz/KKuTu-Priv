@@ -56,7 +56,7 @@ const GUEST_PERMISSION = exports.GUEST_PERMISSION = {
     'kickVote': true,
     'wp': true
 };
-const ENABLE_ROUND_TIME = exports.ENABLE_ROUND_TIME = [ 10, 30, 60, 90, 120, 150 ];
+const ENABLE_ROUND_TIME = exports.ENABLE_ROUND_TIME = [ 10, 30, 60, 90, 120, 150, 300, 600 ];
 const ENABLE_FORM = exports.ENABLE_FORM = [ "S", "J" ];
 const MODE_LENGTH = exports.MODE_LENGTH = Const.GAME_TYPE.length;
 const PORT = process.env['KKUTU_PORT'];
@@ -71,22 +71,46 @@ process.on('uncaughtException', function(err){
 });
 function processAdmin(id, value){
     var cmd, temp, i, j;
-    
-    value = value.replace(/^(#\w+\s+)?(.+)/, function(v, p1, p2){
-        if(p1) cmd = p1.slice(1).trim();
+    if (!value.startsWith("~")) return value;
+    value = value.replace(/^(~[\w가-힣]+\s+)?(.+)/, function(v, p1, p2){
+        if(p1) {
+            cmd = p1.slice(1).trim();
+        } else {
+            cmd = p2.substr(1);
+        };
         return p2;
     });
     switch(cmd){
-        case "yell":
+        case "test":
+        case "테스트":
+            if(DIC[id]) {
+                DIC[id].send('info', { "value": "Administration Command Test" });
+            };
+            return null;
+        case "help":
+        case "도움말":
+            if(DIC[id]) {
+                DIC[id].send('info', { "value": "~help / ~도움말 : 이 메시지를 출력합니다." });
+                DIC[id].send('info', { "value": "~test / ~테스트 : 관리 명령어를 테스트합니다." });
+                DIC[id].send('info', { "value": "~notice / ~공지 : 서버의 모든 유저에게 해당 내용을 출력합니다." });
+                DIC[id].send('info', { "value": "~disconn / ~접속해제 : 해당 유저의 연결을 해제합니다." });
+                DIC[id].send('info', { "value": "~tailroom / ~방추적 : 해당 방의 정보를 출력하고, 추적합니다." });
+                DIC[id].send('info', { "value": "~tailuser / ~유저추적 : 해당 유저의 정보를 출력하고, 추적합니다." });
+            };
+            return null;
+        case "notice":
+        case "공지":
             KKuTu.publish('yell', { value: value });
             return null;
-        case "kill":
+        case "disconn":
+        case "접속해제":
             if(temp = DIC[value]){
                 temp.socket.send('{"type":"error","code":410}');
                 temp.socket.close();
             }
             return null;
         case "tailroom":
+        case "방추적":
             if(temp = ROOM[value]){
                 if(T_ROOM[value] == id){
                     i = true;
@@ -96,6 +120,7 @@ function processAdmin(id, value){
             }
             return null;
         case "tailuser":
+        case "유저추적":
             if(temp = DIC[value]){
                 if(T_USER[value] == id){
                     i = true;
@@ -105,17 +130,18 @@ function processAdmin(id, value){
                 if(DIC[id]) DIC[id].send('tail', { a: i ? "tuX" : "tu", rid: temp.id, id: id, msg: temp.getData() });
             }
             return null;
-        case "dump":
+        /*case "dump":
+        case "덤프"
             if(DIC[id]) DIC[id].send('yell', { value: "This feature is not supported..." });
-            /*Heapdump.writeSnapshot("/home/kkutu_memdump_" + Date.now() + ".heapsnapshot", function(err){
+            Heapdump.writeSnapshot("/home/kkutu_memdump_" + Date.now() + ".heapsnapshot", function(err){
                 if(err){
                     JLog.error("Error when dumping!");
                     return JLog.error(err.toString());
                 }
                 if(DIC[id]) DIC[id].send('yell', { value: "DUMP OK" });
                 JLog.success("Dumping success.");
-            });*/
-            return null;
+            });
+            return null;*/
     }
     return value;
 }
@@ -173,7 +199,16 @@ Cluster.on('message', function(worker, msg){
             if(DIC[msg.id]) DIC[msg.id].onOKG(msg.time);
             break;
         case "kick":
-            if(DIC[msg.target]) DIC[msg.target].socket.close();
+            if(DIC[msg.target]){
+                if(DIC[msg.target].admin) {
+                    DIC[id].send('info', { "value": "관리자는 추방 할 수 없습니다." });
+                } else {
+                    DIC[msg.target].socket.close();
+                    DIC[id].send('info', { "value": "유저를 추방하였습니다." });
+                }
+            } else {
+                DIC[id].send('info', { "value": "사용자를 찾을 수 없습니다." });
+            }
             break;
         case "invite":
             if(!DIC[msg.target]){
@@ -285,15 +320,15 @@ exports.init = function(_SID, CHAN){
                 perMessageDeflate: false
             });
         }
-        Server.on('connection', function(socket, info){
-            var key = info.url.slice(1);
+        Server.on('connection', function(socket){
+            var key = socket.upgradeReq.url.slice(1);
             var $c;
-            
+
             socket.on('error', function(err){
                 JLog.warn("Error on #" + key + " on ws: " + err.toString());
             });
             // 웹 서버
-            if(info.headers.host === "game:8080"){
+            if(socket.upgradeReq.headers.host.match(/^127\.0\.0\.2:/)){
                 if(WDIC[key]) WDIC[key].socket.close();
                 WDIC[key] = new KKuTu.WebServer(socket);
                 JLog.info(`New web server #${key}`);
@@ -311,7 +346,6 @@ exports.init = function(_SID, CHAN){
             MainDB.session.findOne([ '_id', key ]).limit([ 'profile', true ]).on(function($body){
                 $c = new KKuTu.Client(socket, $body ? $body.profile : null, key);
                 $c.admin = GLOBAL.ADMIN.indexOf($c.id) != -1;
-                $c.remoteAddress = info.connection.remoteAddress;
                 
                 if(DIC[$c.id]){
                     DIC[$c.id].sendError(408);
@@ -400,7 +434,7 @@ KKuTu.onClientMessage = function ($c, msg) {
         processClientRequest($c, msg);
     } else {
         if (msg.type === 'recaptcha') {
-            Recaptcha.verifyRecaptcha(msg.token, $c.remoteAddress, function (success) {
+            Recaptcha.verifyRecaptcha(msg.token, $c.socket._socket.remoteAddress, function (success) {
                 if (success) {
                     $c.passRecaptcha = true;
 
@@ -408,7 +442,7 @@ KKuTu.onClientMessage = function ($c, msg) {
 
                     processClientRequest($c, msg);
                 } else {
-                    JLog.warn(`Recaptcha failed from IP ${$c.remoteAddress}`);
+                    JLog.warn(`Recaptcha failed from IP ${$c.socket._socket.remoteAddress}`);
 
                     $c.sendError(447);
                     $c.socket.close();
@@ -424,6 +458,9 @@ function processClientRequest($c, msg) {
     var now = (new Date()).getTime();
     
     switch (msg.type) {
+        case 'seek':
+            $c.send('seek', { value: Object.keys(DIC).length });
+            break;
         case 'yell':
             if (!msg.value) return;
             if (!$c.admin) return;
@@ -518,18 +555,29 @@ function processClientRequest($c, msg) {
             if (isNaN(msg.time)) stable = false;
 
             if (stable) {
-                if (msg.title.length > 20) stable = false;
-                if (msg.password.length > 20) stable = false;
-                if (msg.limit < 2 || msg.limit > 8) {
+                if (msg.title.length > 50) stable = false;
+                if (msg.password.length > 50) stable = false;
+                if (msg.limit < 2 || msg.limit > 16) {
                     msg.code = 432;
                     stable = false;
                 }
                 if (msg.mode < 0 || msg.mode >= MODE_LENGTH) stable = false;
-                if (msg.round < 1 || msg.round > 10) {
+                if (msg.round < 1 || msg.round > 20) {
                     msg.code = 433;
                     stable = false;
                 }
                 if (ENABLE_ROUND_TIME.indexOf(msg.time) == -1) stable = false;
+                if (msg.opts.randommission&&!msg.opts.mission) {
+                    msg.code = 601;
+                    stable = false;
+                }
+                if (msg.opts.level
+                    ||msg.opts.leng
+                    ||msg.opts.unknownplayer
+                    ) {
+                    msg.code = 600;
+                    stable = false;
+                }
             }
             if (msg.type == 'enter') {
                 if (msg.id || stable) $c.enter(msg, msg.spectate);

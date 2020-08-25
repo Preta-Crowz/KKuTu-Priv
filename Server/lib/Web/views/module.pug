@@ -20,7 +20,7 @@
 -
 	const MENU = [
 		{ key: 'HOME', sub: [
-			{ key: 'PKTMAIN', href: "https://prjkt.online/" },
+			{ key: 'PKTMAIN', href: "https://kk.siro.dev/" },
 			{ key: 'SVLIST', href: "http://jjo.kr/kkutu/" }
 		]},
 		{ key: 'TSV', sub: [
@@ -88,7 +88,7 @@ mixin MMenu()
 		div.menu-btn(id='menu-item-GAMES')
 			+FA('bars')
 			+separator(10)
-			div.menu-sub-btn(onclick='location.href = "https://prjkt.online/";', style='margin: 7px 0px; height: 25px;')!= L('HOME')
+			div.menu-sub-btn(onclick='location.href = "https://kk.siro.dev/";', style='margin: 7px 0px; height: 25px;')!= L('HOME')
 			div.menu-sub-btn(onclick='location.href = "https://jjo.kr/kkutu";', style='margin: 7px 0px; height: 25px;')!= L('SVL_S')
 		div#account
 			span#profile= SESSION.profile ? JSON.stringify(SESSION.profile) : '{}'

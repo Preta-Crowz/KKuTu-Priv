@@ -75,6 +75,10 @@ exports.run = (Server, page) => {
 
 			JLog.info(`OAuth Strategy ${i} loaded successfully.`)
 		} catch (error) {
+            if(error.code === "MODULE_NOT_FOUND"){
+                JLog.info(`OAuth Strategy ${i} is disabled.`);
+                continue;
+            }
 			JLog.error(`OAuth Strategy ${i} is not loaded`)
 			JLog.error(error.message)
 		}

@@ -86,7 +86,7 @@ Server.use((req, res, next) => {
 	next();
 });
 Server.use((req, res, next) => {
-	if(Const.IS_SECURED) {
+	if(Const.IS_SECURED && GLOBAL.REDIRECT_HTTPS) {
 		if(req.protocol == 'http') {
 			let url = 'https://'+req.get('host')+req.path;
 			res.status(302).redirect(url);
@@ -145,10 +145,10 @@ DB.ready = function(){
 			}
 		}
 	});
-	Server.listen(80);
+	Server.listen(GLOBAL.WEB_PORT);
 	if(Const.IS_SECURED) {
 		const options = Secure();
-		https.createServer(options, Server).listen(443);
+		https.createServer(options, Server).listen(GLOBAL.SSL_PORT);
 	}
 };
 Const.MAIN_PORTS.forEach(function(v, i){
@@ -159,49 +159,49 @@ Const.MAIN_PORTS.forEach(function(v, i){
 	} else {
 		protocol = 'ws';
 	}
-	gameServers[i] = new GameClient(KEY, `${protocol}://${GLOBAL.GAME_SERVER_HOST}:${v}/${KEY}`);
+    gameServers[i] = new GameClient(KEY, `${protocol}://${GLOBAL.HOSTNAME}:${v}/${KEY}`);
 });
 function GameClient(id, url){
-	var my = this;
+    var my = this;
 
-	my.id = id;
-	my.socket = new WS(url, { perMessageDeflate: false, rejectUnauthorized: false});
-	
-	my.send = function(type, data){
-		if(!data) data = {};
-		data.type = type;
+    my.id = id;
+    my.socket = new WS(url, { perMessageDeflate: false, rejectUnauthorized: false});
+    
+    my.send = function(type, data){
+        if(!data) data = {};
+        data.type = type;
 
-		my.socket.send(JSON.stringify(data));
-	};
-	my.socket.on('open', function(){
-		JLog.info(`Game server #${my.id} connected`);
-	});
-	my.socket.on('error', function(err){
-		JLog.warn(`Game server #${my.id} has an error: ${err.toString()}`);
-	});
-	my.socket.on('close', function(code){
-		JLog.error(`Game server #${my.id} closed: ${code}`);
-		my.socket.removeAllListeners();
-		delete my.socket;
-	});
-	my.socket.on('message', function(data){
-		var _data = data;
-		var i;
+        my.socket.send(JSON.stringify(data));
+    };
+    my.socket.on('open', function(){
+        JLog.info(`Game server #${my.id} connected`);
+    });
+    my.socket.on('error', function(err){
+        JLog.warn(`Game server #${my.id} has an error: ${err.toString()}`);
+    });
+    my.socket.on('close', function(code){
+        JLog.error(`Game server #${my.id} closed: ${code}`);
+        my.socket.removeAllListeners();
+        delete my.socket;
+    });
+    my.socket.on('message', function(data){
+        var _data = data;
+        var i;
 
-		data = JSON.parse(data);
+        data = JSON.parse(data);
 
-		switch(data.type){
-			case "seek":
-				my.seek = data.value;
-				break;
-			case "narrate-friend":
-				for(i in data.list){
-					gameServers[i].send('narrate-friend', { id: data.id, s: data.s, stat: data.stat, list: data.list[i] });
-				}
-				break;
-			default:
-		}
-	});
+        switch(data.type){
+            case "seek":
+                my.seek = data.value;
+                break;
+            case "narrate-friend":
+                for(i in data.list){
+                    gameServers[i].send('narrate-friend', { id: data.id, s: data.s, stat: data.stat, list: data.list[i] });
+                }
+                break;
+            default:
+        }
+    });
 }
 ROUTES.forEach(function(v){
 	require(`./routes/${v}`).run(Server, WebInit.page);
@@ -233,7 +233,7 @@ Server.get("/", function(req, res){
 			'_page': "kkutu",
 			'_id': id,
 			'PORT': Const.MAIN_PORTS[server],
-			'HOST': req.hostname,
+			'HOST': Const.CUSTOM_HOST ? Const.HOSTNAME : req.hostname,
 			'PROTOCOL': Const.IS_SECURED ? 'wss' : 'ws',
 			'TEST': req.query.test,
 			'MOREMI_PART': Const.MOREMI_PART,
@@ -249,10 +249,10 @@ Server.get("/", function(req, res){
 			'EN_THEME': Const.EN_THEME,
             'JA_THEME': Const.JA_THEME,
 			'IJP_EXCEPT': Const.IJP_EXCEPT,
-			'ogImage': "http://kkutu.kr/img/kkutu/logo.png",
-			'ogURL': "http://kkutu.kr/",
-			'ogTitle': "글자로 놀자! 끄투 온라인",
-			'ogDescription': "끝말잇기가 이렇게 박진감 넘치는 게임이었다니!"
+			'ogImage': Const.OG_IMAGE,
+			'ogURL': Const.OG_URL,
+			'ogTitle': Const.OG_TITLE,
+			'ogDescription': Const.OG_DESC
 		});
 	}
 });
