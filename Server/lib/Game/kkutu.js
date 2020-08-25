@@ -283,11 +283,9 @@ exports.Client = function(socket, profile, sid){
     });
     socket.on('message', function(msg){
         var data, room = ROOM[my.place];
-        if(!my) return;
-        if(!msg) return;
         
         try{ data = JSON.parse(msg); }catch(e){ data = { error: 400 }; }
-        JLog.log(`Chan @${channel} Msg #${my.id}: ${msg}`);
+        if(data.type != "seek") JLog.log(`Chan @${channel} Msg #${my.id}: ${msg}`);
         if(Cluster.isWorker) process.send({ type: "tail-report", id: my.id, chan: channel, place: my.place, msg: data.error ? msg : data });
         
         exports.onClientMessage(my, data);
