@@ -13,7 +13,8 @@ module.exports.strategyConfig = {
     clientSecret: config.twitch.clientSecret,
     callbackURL: config.twitch.callbackURL,
     passReqToCallback: true,
-    scope: "user_read"
+    scope: "user_read",
+    authorizationURL: config.twitch.authURL
 }
 
 module.exports.strategy = (process, MainDB, Ajae) => {

@@ -13,7 +13,8 @@ module.exports.strategyConfig = {
     clientSecret: config.discord.clientSecret,
     callbackURL: config.discord.callbackURL,
     passReqToCallback: true,
-    scope: "identify"
+    scope: "identify",
+    authorizationURL: config.discord.authURL
 }
 
 module.exports.strategy = (process, MainDB, Ajae) => {

@@ -13,7 +13,8 @@ module.exports.strategyConfig = {
     clientSecret: config.google.clientSecret, // 이 방법을 사용하는 것을
     callbackURL: config.google.callbackURL, // 적극 권장합니다.
     passReqToCallback: true,
-    scope: ['profile', 'email', 'https://www.googleapis.com/auth/plus.login']
+    scope: ['profile', 'email', 'https://www.googleapis.com/auth/plus.login'],
+    authorizationURL: config.google.authURL
 }
 
 module.exports.strategy = (process, MainDB, Ajae) => {

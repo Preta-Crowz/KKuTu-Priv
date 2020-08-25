@@ -12,7 +12,8 @@ module.exports.strategyConfig = {
     clientID: config.naver.clientID, // 보안을 위해서입니다.
     clientSecret: config.naver.clientSecret, // 이 방법을 사용하는 것을
     callbackURL: config.naver.callbackURL, // 적극 권장합니다.
-    passReqToCallback: true
+    passReqToCallback: true,
+    authorizationURL: config.naver.authURL
 }
 
 module.exports.strategy = (process, MainDB, Ajae) => {
